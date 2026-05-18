@@ -1,0 +1,1341 @@
+<html lang="es"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRAKIA | Sistema de operaciones para trabajadores de campo</title>
+  <meta name="description" content="TRAKIA digitaliza asistencia, tareas, incidentes y documentos para empresas con trabajadores de campo. App Android offline-first y panel web para supervisores.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;family=Source+Sans+3:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Source Sans 3', system-ui, sans-serif; }
+    h1, h2, h3, h4, .heading { font-family: 'Sora', system-ui, sans-serif; }
+    .mono { font-family: 'IBM Plex Mono', monospace; }
+    .eyebrow { font-family: 'Source Sans 3', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #175CD3; }
+    .h1 { font-family: 'Sora', sans-serif; font-weight: 700; line-height: 1.02; letter-spacing: -0.04em; }
+    .h2 { font-family: 'Sora', sans-serif; font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; }
+    .h3 { font-family: 'Sora', sans-serif; font-weight: 600; line-height: 1.25; }
+    .body-lg { font-size: 18px; line-height: 1.65; }
+    .body-normal { font-size: 16px; line-height: 1.65; }
+    .caption { font-size: 13px; line-height: 1.45; }
+    .table-text { font-size: 13px; }
+    nav a { font-family: 'Source Sans 3', sans-serif; font-size: 15px; font-weight: 500; }
+    .btn-primary { background: #175CD3; color: #fff; border-radius: 8px; font-weight: 600; transition: background 0.15s; font-family: 'Sora', sans-serif; }
+    .btn-primary:hover { background: #1849A9; }
+    .btn-secondary { background: #fff; color: #101828; border: 1px solid #D0D5DD; border-radius: 8px; font-weight: 600; transition: background 0.15s; font-family: 'Sora', sans-serif; }
+    .btn-secondary:hover { background: #F8FAFC; }
+    .border-light { border-color: #E4E7EC; }
+    .text-navy { color: #101828; }
+    .text-slate { color: #475467; }
+    .text-muted { color: #667085; }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    .accordion-content.open { max-height: 500px; }
+    .accordion-icon { transition: transform 0.3s ease; }
+    .accordion-icon.open { transform: rotate(45deg); }
+    #mobile-menu { transform: translateX(100%); transition: transform 0.3s ease; }
+    #mobile-menu.open { transform: translateX(0); }
+    .dashboard-row:hover { background: #F8FAFC; }
+    .sticky-header { position: sticky; top: 0; z-index: 50; background: #fff; transition: box-shadow 0.2s; }
+    .sticky-header.scrolled { box-shadow: 0 1px 0 #E4E7EC; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #175CD3; box-shadow: 0 0 0 3px rgba(23,92,211,0.1); }
+    .timeline-line { background: #E4E7EC; }
+    @media (max-width: 768px) {
+      .h1 { font-size: 38px; }
+      .h2-resp { font-size: 28px; }
+    }
+    @media (min-width: 769px) {
+      .h1 { font-size: 60px; }
+      .h2-resp { font-size: 40px; }
+    }
+    .status-green { background: #DCFCE7; color: #16803C; }
+    .status-amber { background: #FEF3C7; color: #DC6803; }
+    .status-red { background: #FEE2E2; color: #B42318; }
+    .status-blue { background: #EFF6FF; color: #175CD3; }
+    .pricing-highlight { border: 1.5px solid #175CD3; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #F8FAFC; }
+    ::-webkit-scrollbar-thumb { background: #D0D5DD; border-radius: 3px; }
+    .section-divider { border-top: 1px solid #E4E7EC; }
+  </style>
+</head>
+<body class="bg-white text-navy antialiased">
+
+  <!-- MOBILE MENU OVERLAY -->
+  <div id="mobile-menu" class="fixed inset-0 z-50 bg-white flex flex-col">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-light">
+      <span class="heading font-bold text-base tracking-tight text-navy" style="font-family:'Sora',sans-serif;letter-spacing:-0.02em;">TRAKIA</span>
+      <button onclick="toggleMenu()" class="p-2 text-slate">
+        <iconify-icon icon="solar:close-circle-linear" width="24" style="stroke-width:1.5"></iconify-icon>
+      </button>
+    </div>
+    <nav class="flex flex-col gap-0 px-6 py-4 flex-1">
+      <a href="#producto" onclick="toggleMenu()" class="py-4 border-b border-light text-navy text-base font-medium">Producto</a>
+      <a href="#como-funciona" onclick="toggleMenu()" class="py-4 border-b border-light text-navy text-base font-medium">Cómo funciona</a>
+      <a href="#sectores" onclick="toggleMenu()" class="py-4 border-b border-light text-navy text-base font-medium">Sectores</a>
+      <a href="#cumplimiento" onclick="toggleMenu()" class="py-4 border-b border-light text-navy text-base font-medium">Cumplimiento</a>
+      <a href="#contacto" onclick="toggleMenu()" class="py-4 border-b border-light text-navy text-base font-medium">Contacto</a>
+    </nav>
+    <div class="px-6 pb-8 flex flex-col gap-3">
+      <a href="#" class="btn-secondary text-center py-3 px-6 text-sm">Ingresar</a>
+      <a href="#contacto" onclick="toggleMenu()" class="btn-primary text-center py-3 px-6 text-sm">Solicitar demo</a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="sticky-header" id="header">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 flex items-center justify-between h-16">
+      <span class="h3 text-navy" style="font-family:'Sora',sans-serif;font-weight:700;letter-spacing:-0.03em;font-size:17px;">TRAKIA</span>
+      <nav class="hidden md:flex items-center gap-7">
+        <a href="#producto" class="text-slate hover:text-navy transition-colors">Producto</a>
+        <a href="#como-funciona" class="text-slate hover:text-navy transition-colors">Cómo funciona</a>
+        <a href="#sectores" class="text-slate hover:text-navy transition-colors">Sectores</a>
+        <a href="#cumplimiento" class="text-slate hover:text-navy transition-colors">Cumplimiento</a>
+        <a href="#contacto" class="text-slate hover:text-navy transition-colors">Contacto</a>
+      </nav>
+      <div class="hidden md:flex items-center gap-3">
+        <a href="#" class="text-slate hover:text-navy text-sm font-medium transition-colors">Ingresar</a>
+        <a href="#contacto" class="btn-primary px-4 py-2 text-sm">Solicitar demo</a>
+      </div>
+      <button onclick="toggleMenu()" class="md:hidden p-2 text-slate">
+        <iconify-icon icon="solar:hamburger-menu-linear" width="22" style="stroke-width:1.5"></iconify-icon>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="bg-white pt-16 pb-20 md:pt-24 md:pb-28">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
+          <!-- Left: Text -->
+          <div class="flex-1 max-w-xl">
+            <div class="eyebrow mb-5">Sistema de operaciones de campo</div>
+            <h1 class="h1 text-navy mb-6" style="font-size:clamp(38px,5.5vw,62px);">
+              Controla tu operación de campo sin papel ni WhatsApp
+            </h1>
+            <p class="body-lg text-slate mb-8" style="max-width:520px;">
+              TRAKIA ayuda a empresas con trabajadores de campo a registrar asistencia, tareas, incidentes y documentos desde una app móvil offline-first, con visibilidad en tiempo real para supervisores y gerencias.
+            </p>
+            <div class="flex flex-wrap gap-3 mb-7">
+              <a href="#contacto" class="btn-primary px-6 py-3 text-sm">Solicitar demo</a>
+              <a href="#como-funciona" class="btn-secondary px-6 py-3 text-sm">Ver cómo funciona</a>
+            </div>
+            <div class="caption text-muted" style="font-size:12px;letter-spacing:0.01em;">
+              App Android offline-first · Panel web supervisor · GPS · Evidencia con foto · Reportes exportables
+            </div>
+          </div>
+
+          <!-- Right: Product Mockup -->
+          <div class="flex-1 w-full flex gap-4 items-start">
+            <!-- Mobile App Mockup -->
+            <div class="flex-none w-52 md:w-56 border border-light rounded-xl overflow-hidden bg-white" style="box-shadow:0 12px 30px rgba(16,24,40,0.08);">
+              <!-- App Header -->
+              <div class="bg-white border-b border-light px-4 py-3">
+                <div class="caption text-muted mb-0.5" style="font-family:'IBM Plex Mono',monospace;font-size:10px;">TRAKIA · APP</div>
+                <div class="h3 text-navy" style="font-size:13px;font-weight:600;">Check-in de turno</div>
+              </div>
+              <!-- Offline badge -->
+              <div class="px-4 py-2 bg-amber-50 border-b border-light">
+                <span class="mono caption" style="font-size:10px;color:#DC6803;">
+                  <iconify-icon icon="solar:wifi-router-minimalistic-linear" width="10" style="stroke-width:1.5"></iconify-icon>
+                  Sin conexión · se sincronizará luego
+                </span>
+              </div>
+              <!-- Fields -->
+              <div class="px-4 py-3 space-y-2">
+                <div class="flex justify-between items-center">
+                  <span class="caption text-muted" style="font-size:11px;">Trabajador</span>
+                  <span class="caption text-navy font-medium" style="font-size:11px;">Luis Ramírez</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="caption text-muted" style="font-size:11px;">Obra</span>
+                  <span class="caption text-navy font-medium" style="font-size:11px;">Torre Norte</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="caption text-muted" style="font-size:11px;">Hora</span>
+                  <span class="mono caption text-navy" style="font-size:11px;">07:02</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="caption text-muted" style="font-size:11px;">Ubicación</span>
+                  <span class="caption" style="font-size:11px;color:#16803C;font-weight:500;">GPS registrada</span>
+                </div>
+              </div>
+              <!-- Button -->
+              <div class="px-4 pb-3">
+                <div class="btn-primary text-center py-2 w-full" style="font-size:11px;font-weight:600;cursor:default;">Registrar entrada</div>
+              </div>
+              <!-- Task mini list -->
+              <div class="px-4 pb-4 border-t border-light pt-3">
+                <div class="caption text-muted mb-2" style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Tareas del turno</div>
+                <div class="space-y-1.5">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-amber-400 flex-none"></div>
+                    <span style="font-size:11px;color:#101828;">Revisar zona asignada</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-slate-300 flex-none"></div>
+                    <span style="font-size:11px;color:#101828;">Confirmar avance</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-slate-300 flex-none"></div>
+                    <span style="font-size:11px;color:#101828;">Reportar incidente</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dashboard Mockup -->
+            <div class="flex-1 min-w-0 border border-light rounded-xl overflow-hidden bg-white" style="box-shadow:0 12px 30px rgba(16,24,40,0.08);">
+              <div class="px-4 py-3 border-b border-light flex items-center justify-between">
+                <div>
+                  <div class="caption text-muted" style="font-family:'IBM Plex Mono',monospace;font-size:10px;">TRAKIA · PANEL WEB</div>
+                  <div class="h3 text-navy" style="font-size:13px;font-weight:600;">Operación de campo</div>
+                </div>
+                <span class="mono caption" style="font-size:10px;color:#16803C;">En vivo</span>
+              </div>
+              <!-- Metrics row -->
+              <div class="grid grid-cols-2 md:grid-cols-4 border-b border-light">
+                <div class="px-3 py-3 border-r border-light">
+                  <div class="mono text-navy" style="font-size:18px;font-weight:600;">184</div>
+                  <div style="font-size:10px;color:#667085;">Presentes</div>
+                </div>
+                <div class="px-3 py-3 border-r border-light">
+                  <div class="mono" style="font-size:18px;font-weight:600;color:#DC6803;">12</div>
+                  <div style="font-size:10px;color:#667085;">Tardanzas</div>
+                </div>
+                <div class="px-3 py-3 border-r border-light">
+                  <div class="mono" style="font-size:18px;font-weight:600;color:#B42318;">3</div>
+                  <div style="font-size:10px;color:#667085;">Incidentes</div>
+                </div>
+                <div class="px-3 py-3">
+                  <div class="mono text-navy" style="font-size:18px;font-weight:600;">28</div>
+                  <div style="font-size:10px;color:#667085;">Pend. tareas</div>
+                </div>
+              </div>
+              <!-- Alert -->
+              <div class="px-4 py-2 bg-amber-50 border-b border-light">
+                <span style="font-size:10px;color:#DC6803;font-weight:500;">⚠ Documento SCTR vence en 7 días</span>
+              </div>
+              <!-- Table -->
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead>
+                    <tr class="border-b border-light">
+                      <th class="px-3 py-2 text-left" style="font-size:10px;color:#667085;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Trabajador</th>
+                      <th class="px-3 py-2 text-left" style="font-size:10px;color:#667085;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Sede</th>
+                      <th class="px-3 py-2 text-left" style="font-size:10px;color:#667085;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Estado</th>
+                      <th class="px-3 py-2 text-left hidden md:table-cell" style="font-size:10px;color:#667085;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Sync</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-light dashboard-row">
+                      <td class="px-3 py-2" style="font-size:11px;color:#101828;font-weight:500;">Luis Ramírez</td>
+                      <td class="px-3 py-2" style="font-size:11px;color:#475467;">Obra Norte</td>
+                      <td class="px-3 py-2"><span class="status-green px-1.5 py-0.5 rounded" style="font-size:10px;font-weight:500;">Presente</span></td>
+                      <td class="px-3 py-2 hidden md:table-cell mono" style="font-size:10px;color:#667085;">3 min</td>
+                    </tr>
+                    <tr class="border-b border-light dashboard-row">
+                      <td class="px-3 py-2" style="font-size:11px;color:#101828;font-weight:500;">María Torres</td>
+                      <td class="px-3 py-2" style="font-size:11px;color:#475467;">Planta Ate</td>
+                      <td class="px-3 py-2"><span class="status-amber px-1.5 py-0.5 rounded" style="font-size:10px;font-weight:500;">Tardanza</span></td>
+                      <td class="px-3 py-2 hidden md:table-cell mono" style="font-size:10px;color:#667085;">8 min</td>
+                    </tr>
+                    <tr class="dashboard-row">
+                      <td class="px-3 py-2" style="font-size:11px;color:#101828;font-weight:500;">Jorge Valdez</td>
+                      <td class="px-3 py-2" style="font-size:11px;color:#475467;">Cuadrilla A</td>
+                      <td class="px-3 py-2"><span class="status-red px-1.5 py-0.5 rounded" style="font-size:10px;font-weight:500;">Incidente</span></td>
+                      <td class="px-3 py-2 hidden md:table-cell mono" style="font-size:10px;color:#667085;">1 min</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUST / PROBLEM STRIP -->
+    <section class="border-t border-b border-light bg-white py-8">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-0">
+          <p class="body-normal text-navy font-medium md:w-72 md:border-r border-light md:pr-8" style="font-size:15px;font-weight:600;line-height:1.4;font-family:'Sora',sans-serif;">
+            Cuando la operación ocurre fuera de oficina, el papel llega tarde.
+          </p>
+          <div class="flex flex-wrap md:flex-nowrap gap-0 flex-1">
+            <div class="w-1/2 md:w-auto md:flex-1 md:border-r border-light px-0 md:px-8 py-1 md:py-0">
+              <div class="caption text-muted mb-0.5" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">01</div>
+              <div class="body-normal text-navy" style="font-size:14px;font-weight:500;">Asistencia manual</div>
+            </div>
+            <div class="w-1/2 md:w-auto md:flex-1 md:border-r border-light px-4 md:px-8 py-1 md:py-0">
+              <div class="caption text-muted mb-0.5" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">02</div>
+              <div class="body-normal text-navy" style="font-size:14px;font-weight:500;">Incidentes sin evidencia</div>
+            </div>
+            <div class="w-1/2 md:w-auto md:flex-1 md:border-r border-light px-0 md:px-8 py-1 md:py-0 mt-3 md:mt-0">
+              <div class="caption text-muted mb-0.5" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">03</div>
+              <div class="body-normal text-navy" style="font-size:14px;font-weight:500;">Tareas por WhatsApp</div>
+            </div>
+            <div class="w-1/2 md:w-auto md:flex-1 px-4 md:px-8 py-1 md:py-0 mt-3 md:mt-0">
+              <div class="caption text-muted mb-0.5" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">04</div>
+              <div class="body-normal text-navy" style="font-size:14px;font-weight:500;">Reportes en Excel</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEM -->
+    <section class="py-20 md:py-28 bg-white">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
+          <!-- Left -->
+          <div class="flex-1 max-w-md">
+            <div class="eyebrow mb-4">El problema</div>
+            <h2 class="h2 h2-resp text-navy mb-6" style="font-family:'Sora',sans-serif;">
+              La información de campo llega tarde, incompleta o sin trazabilidad
+            </h2>
+            <p class="body-lg text-slate" style="max-width:420px;">
+              En empresas con personal en obra, planta, almacén, local o ruta, la operación diaria depende de supervisores, cuadernos, llamadas y mensajes. Eso genera retrasos, errores, disputas de horas, poca visibilidad y dificultad para responder ante auditorías o fiscalizaciones.
+            </p>
+            <div class="mt-8 pt-8 border-t border-light">
+              <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=480&amp;q=80" alt="Supervisor en obra revisando documentos" class="rounded-lg w-full object-cover" style="height:200px;">
+            </div>
+          </div>
+          <!-- Right: operational list -->
+          <div class="flex-1">
+            <div class="caption text-muted mb-4" style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Situaciones frecuentes</div>
+            <div class="space-y-0">
+              <div class="flex gap-4 py-5 border-t border-light">
+                <span class="mono text-muted flex-none" style="font-size:12px;margin-top:2px;">01</span>
+                <p class="body-normal text-navy" style="font-size:15px;">El supervisor consolida información al final del día, cuando ya es difícil corregir problemas.</p>
+              </div>
+              <div class="flex gap-4 py-5 border-t border-light">
+                <span class="mono text-muted flex-none" style="font-size:12px;margin-top:2px;">02</span>
+                <p class="body-normal text-navy" style="font-size:15px;">RR.HH. depende de reportes manuales para cerrar planillas y verificar horas trabajadas.</p>
+              </div>
+              <div class="flex gap-4 py-5 border-t border-light">
+                <span class="mono text-muted flex-none" style="font-size:12px;margin-top:2px;">03</span>
+                <p class="body-normal text-navy" style="font-size:15px;">Los incidentes no siempre tienen evidencia suficiente para documentación posterior.</p>
+              </div>
+              <div class="flex gap-4 py-5 border-t border-light">
+                <span class="mono text-muted flex-none" style="font-size:12px;margin-top:2px;">04</span>
+                <p class="body-normal text-navy" style="font-size:15px;">La gerencia toma decisiones con información que tiene horas o días de atraso.</p>
+              </div>
+              <div class="flex gap-4 py-5 border-t border-light">
+                <span class="mono text-muted flex-none" style="font-size:12px;margin-top:2px;">05</span>
+                <p class="body-normal text-navy" style="font-size:15px;">Los documentos críticos del trabajador pueden vencer sin que nadie lo note a tiempo.</p>
+              </div>
+              <div class="flex gap-4 py-5 border-t border-b border-light">
+                <span class="mono text-muted flex-none" style="font-size:12px;margin-top:2px;">06</span>
+                <p class="body-normal text-navy" style="font-size:15px;">No existe una vista diaria confiable de lo que ocurre en campo o en cada sede.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUTION OVERVIEW -->
+    <section class="py-20 md:py-28 bg-white border-t border-light" id="producto">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="max-w-2xl mb-14">
+          <div class="eyebrow mb-4">La solución</div>
+          <h2 class="h2 h2-resp text-navy mb-5" style="font-family:'Sora',sans-serif;">Un sistema operativo para trabajadores de campo</h2>
+          <p class="body-lg text-slate" style="max-width:580px;">
+            TRAKIA conecta al trabajador, supervisor y equipo administrativo en una sola operación digital. El trabajador registra lo que ocurre desde su celular. El supervisor ve avance y alertas en tiempo real. La empresa conserva evidencia ordenada para gestión, auditoría y cumplimiento.
+          </p>
+        </div>
+        <!-- 3 columns with vertical borders -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-light rounded-lg overflow-hidden">
+          <div class="p-8 md:border-r border-light">
+            <div class="mono text-muted mb-4" style="font-size:11px;">01</div>
+            <h3 class="h3 text-navy mb-3" style="font-size:18px;">App móvil para el trabajador</h3>
+            <p class="body-normal text-slate" style="font-size:15px;">Check-in, tareas, incidentes, fotos y formularios desde Android, incluso sin conexión a internet.</p>
+            <div class="mt-6 pt-6 border-t border-light">
+              <iconify-icon icon="solar:smartphone-linear" width="28" style="stroke-width:1.5;color:#175CD3;"></iconify-icon>
+            </div>
+          </div>
+          <div class="p-8 md:border-r border-light border-t md:border-t-0">
+            <div class="mono text-muted mb-4" style="font-size:11px;">02</div>
+            <h3 class="h3 text-navy mb-3" style="font-size:18px;">Panel web para supervisores</h3>
+            <p class="body-normal text-slate" style="font-size:15px;">Vista diaria de presencia, avance, alertas, ubicaciones y estado de la operación en tiempo real.</p>
+            <div class="mt-6 pt-6 border-t border-light">
+              <iconify-icon icon="solar:monitor-smartphone-linear" width="28" style="stroke-width:1.5;color:#175CD3;"></iconify-icon>
+            </div>
+          </div>
+          <div class="p-8 border-t md:border-t-0">
+            <div class="mono text-muted mb-4" style="font-size:11px;">03</div>
+            <h3 class="h3 text-navy mb-3" style="font-size:18px;">Reportes para gestión</h3>
+            <p class="body-normal text-slate" style="font-size:15px;">Exportación de asistencia, evidencias, documentos y reportes para RR.HH., operaciones y cumplimiento.</p>
+            <div class="mt-6 pt-6 border-t border-light">
+              <iconify-icon icon="solar:document-text-linear" width="28" style="stroke-width:1.5;color:#175CD3;"></iconify-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD PREVIEW (big section) -->
+    <section class="py-20 md:py-28 bg-white border-t border-light">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="mb-10">
+          <div class="eyebrow mb-3">Panel supervisor</div>
+          <h2 class="h2 h2-resp text-navy" style="font-family:'Sora',sans-serif;">Una vista diaria de lo que está pasando</h2>
+        </div>
+        <!-- Big Dashboard Mockup -->
+        <div class="border border-light rounded-xl overflow-hidden bg-white" style="box-shadow:0 12px 40px rgba(16,24,40,0.07);">
+          <!-- Dashboard Header -->
+          <div class="px-5 py-4 border-b border-light flex items-center justify-between flex-wrap gap-3">
+            <div class="flex items-center gap-3">
+              <span class="h3 text-navy" style="font-size:14px;font-weight:600;font-family:'Sora',sans-serif;">Panel de Operaciones</span>
+              <span class="status-green px-2 py-0.5 rounded text-xs font-medium">En vivo</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="mono text-muted" style="font-size:11px;">Lunes 16 Jun 2025 · 09:14</span>
+              <div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+            </div>
+          </div>
+          <!-- Top Metrics -->
+          <div class="grid grid-cols-2 md:grid-cols-4 border-b border-light">
+            <div class="px-5 py-5 border-r border-light">
+              <div class="caption text-muted mb-1" style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">Trabajadores activos</div>
+              <div class="mono text-navy" style="font-size:28px;font-weight:600;line-height:1;">186</div>
+              <div class="caption" style="font-size:11px;color:#16803C;margin-top:4px;">↑ 3 vs. ayer</div>
+            </div>
+            <div class="px-5 py-5 border-r border-light">
+              <div class="caption text-muted mb-1" style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">Asistencia del día</div>
+              <div class="mono text-navy" style="font-size:28px;font-weight:600;line-height:1;">92%</div>
+              <div class="caption text-muted" style="font-size:11px;margin-top:4px;">171 de 186</div>
+            </div>
+            <div class="px-5 py-5 border-r border-light">
+              <div class="caption text-muted mb-1" style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">Alertas abiertas</div>
+              <div class="mono" style="font-size:28px;font-weight:600;line-height:1;color:#DC6803;">14</div>
+              <div class="caption" style="font-size:11px;color:#DC6803;margin-top:4px;">3 de alta prioridad</div>
+            </div>
+            <div class="px-5 py-5">
+              <div class="caption text-muted mb-1" style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">Docs por vencer</div>
+              <div class="mono" style="font-size:28px;font-weight:600;line-height:1;color:#B42318;">6</div>
+              <div class="caption text-muted" style="font-size:11px;margin-top:4px;">Próx. 15 días</div>
+            </div>
+          </div>
+          <!-- Main content: 2 columns -->
+          <div class="flex flex-col lg:flex-row">
+            <!-- Left: Activity table -->
+            <div class="flex-1 border-b lg:border-b-0 lg:border-r border-light">
+              <div class="px-5 py-3 border-b border-light">
+                <span class="caption text-navy font-semibold" style="font-size:12px;text-transform:uppercase;letter-spacing:0.08em;">Actividad reciente</span>
+              </div>
+              <div class="divide-y divide-light">
+                <div class="px-5 py-3 flex items-center gap-3 dashboard-row">
+                  <div class="w-6 h-6 rounded-full status-green flex items-center justify-center flex-none">
+                    <iconify-icon icon="solar:check-circle-linear" width="12" style="stroke-width:1.5;color:#16803C;"></iconify-icon>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div style="font-size:13px;color:#101828;font-weight:500;">Check-in registrado</div>
+                    <div class="mono" style="font-size:11px;color:#667085;">Carlos Mendes · Obra Norte · 08:45</div>
+                  </div>
+                  <span class="status-green px-1.5 py-0.5 rounded" style="font-size:10px;">GPS OK</span>
+                </div>
+                <div class="px-5 py-3 flex items-center gap-3 dashboard-row">
+                  <div class="w-6 h-6 rounded-full status-blue flex items-center justify-center flex-none">
+                    <iconify-icon icon="solar:clipboard-check-linear" width="12" style="stroke-width:1.5;color:#175CD3;"></iconify-icon>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div style="font-size:13px;color:#101828;font-weight:500;">Tarea completada</div>
+                    <div class="mono" style="font-size:11px;color:#667085;">Cuadrilla A · Revisión zona 3 · 09:02</div>
+                  </div>
+                  <span class="status-blue px-1.5 py-0.5 rounded" style="font-size:10px;">Completado</span>
+                </div>
+                <div class="px-5 py-3 flex items-center gap-3 dashboard-row">
+                  <div class="w-6 h-6 rounded-full status-red flex items-center justify-center flex-none">
+                    <iconify-icon icon="solar:danger-triangle-linear" width="12" style="stroke-width:1.5;color:#B42318;"></iconify-icon>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div style="font-size:13px;color:#101828;font-weight:500;">Incidente reportado</div>
+                    <div class="mono" style="font-size:11px;color:#667085;">Jorge Valdez · Planta Ate · 08:58</div>
+                  </div>
+                  <span class="status-red px-1.5 py-0.5 rounded" style="font-size:10px;">Pendiente</span>
+                </div>
+                <div class="px-5 py-3 flex items-center gap-3 dashboard-row">
+                  <div class="w-6 h-6 rounded-full status-amber flex items-center justify-center flex-none">
+                    <iconify-icon icon="solar:file-text-linear" width="12" style="stroke-width:1.5;color:#DC6803;"></iconify-icon>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div style="font-size:13px;color:#101828;font-weight:500;">Documento actualizado</div>
+                    <div class="mono" style="font-size:11px;color:#667085;">SCTR · Ana Flores · 08:30</div>
+                  </div>
+                  <span class="status-amber px-1.5 py-0.5 rounded" style="font-size:10px;">Vence pronto</span>
+                </div>
+              </div>
+            </div>
+            <!-- Right: Alerts + cuadrillas -->
+            <div class="lg:w-72 flex-none">
+              <div class="px-5 py-3 border-b border-light">
+                <span class="caption text-navy font-semibold" style="font-size:12px;text-transform:uppercase;letter-spacing:0.08em;">Alertas activas</span>
+              </div>
+              <div class="divide-y divide-light">
+                <div class="px-5 py-3">
+                  <div class="flex items-start gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-none"></div>
+                    <div>
+                      <div style="font-size:12px;color:#101828;font-weight:500;">Ausencia sin justificar</div>
+                      <div class="mono" style="font-size:10px;color:#667085;">Pedro Salas · Turno mañana</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="px-5 py-3">
+                  <div class="flex items-start gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-none"></div>
+                    <div>
+                      <div style="font-size:12px;color:#101828;font-weight:500;">Incidente pendiente revisión</div>
+                      <div class="mono" style="font-size:10px;color:#667085;">Planta Ate · hace 16 min</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="px-5 py-3">
+                  <div class="flex items-start gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-none"></div>
+                    <div>
+                      <div style="font-size:12px;color:#101828;font-weight:500;">SCTR vence en 7 días</div>
+                      <div class="mono" style="font-size:10px;color:#667085;">Luis Ramírez · Obra Norte</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="px-5 py-3">
+                  <div class="flex items-start gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-none"></div>
+                    <div>
+                      <div style="font-size:12px;color:#101828;font-weight:500;">Tarea sin completar</div>
+                      <div class="mono" style="font-size:10px;color:#667085;">Cuadrilla B · Revisión equipo</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Cuadrillas mini table -->
+              <div class="border-t border-light">
+                <div class="px-5 py-3 border-b border-light">
+                  <span class="caption text-navy font-semibold" style="font-size:12px;text-transform:uppercase;letter-spacing:0.08em;">Cuadrillas</span>
+                </div>
+                <table class="w-full">
+                  <tbody>
+                    <tr class="border-b border-light dashboard-row">
+                      <td class="px-5 py-2" style="font-size:11px;color:#101828;font-weight:500;">Obra Norte</td>
+                      <td class="px-2 py-2 mono text-center" style="font-size:11px;color:#16803C;">24</td>
+                      <td class="px-2 py-2" style="font-size:10px;color:#667085;">8 tareas</td>
+                      <td class="px-2 py-2"><span class="status-green px-1.5 py-0.5 rounded" style="font-size:10px;">OK</span></td>
+                    </tr>
+                    <tr class="border-b border-light dashboard-row">
+                      <td class="px-5 py-2" style="font-size:11px;color:#101828;font-weight:500;">Planta Ate</td>
+                      <td class="px-2 py-2 mono text-center" style="font-size:11px;color:#DC6803;">18</td>
+                      <td class="px-2 py-2" style="font-size:10px;color:#667085;">5 tareas</td>
+                      <td class="px-2 py-2"><span class="status-red px-1.5 py-0.5 rounded" style="font-size:10px;">Alerta</span></td>
+                    </tr>
+                    <tr class="dashboard-row">
+                      <td class="px-5 py-2" style="font-size:11px;color:#101828;font-weight:500;">Cuadrilla A</td>
+                      <td class="px-2 py-2 mono text-center" style="font-size:11px;color:#16803C;">12</td>
+                      <td class="px-2 py-2" style="font-size:10px;color:#667085;">3 tareas</td>
+                      <td class="px-2 py-2"><span class="status-green px-1.5 py-0.5 rounded" style="font-size:10px;">OK</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT MODULES -->
+    <section class="py-20 md:py-28 bg-white border-t border-light" id="producto">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div>
+            <div class="eyebrow mb-3">Producto</div>
+            <h2 class="h2 h2-resp text-navy" style="font-family:'Sora',sans-serif;max-width:480px;">Todo lo que ocurre en campo, registrado en un solo lugar</h2>
+          </div>
+        </div>
+        <!-- Module rows -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+          <div class="flex gap-5 py-6 border-t border-light md:pr-10">
+            <span class="mono text-muted flex-none" style="font-size:12px;margin-top:3px;">01</span>
+            <div>
+              <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Check-in/out con GPS offline</h3>
+              <p class="body-normal text-slate" style="font-size:14px;">El trabajador registra entrada y salida desde su celular. Si no hay señal, TRAKIA guarda el registro y lo sincroniza después automáticamente.</p>
+            </div>
+          </div>
+          <div class="flex gap-5 py-6 border-t border-light md:pl-10 md:border-l">
+            <span class="mono text-muted flex-none" style="font-size:12px;margin-top:3px;">02</span>
+            <div>
+              <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Tareas y avance diario</h3>
+              <p class="body-normal text-slate" style="font-size:14px;">El supervisor asigna tareas por cuadrilla, trabajador o sede. El equipo confirma avance, bloqueos y finalización desde la app.</p>
+            </div>
+          </div>
+          <div class="flex gap-5 py-6 border-t border-light md:pr-10">
+            <span class="mono text-muted flex-none" style="font-size:12px;margin-top:3px;">03</span>
+            <div>
+              <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Reporte de incidentes con foto</h3>
+              <p class="body-normal text-slate" style="font-size:14px;">Cualquier incidente o casi-incidente queda documentado con descripción, evidencia visual, ubicación y hora exacta.</p>
+            </div>
+          </div>
+          <div class="flex gap-5 py-6 border-t border-light md:pl-10 md:border-l">
+            <span class="mono text-muted flex-none" style="font-size:12px;margin-top:3px;">04</span>
+            <div>
+              <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Documentos del trabajador</h3>
+              <p class="body-normal text-slate" style="font-size:14px;">Control de documentos, certificados, seguros y fechas de vencimiento con alertas anticipadas a 30, 15 y 7 días.</p>
+            </div>
+          </div>
+          <div class="flex gap-5 py-6 border-t border-light md:pr-10">
+            <span class="mono text-muted flex-none" style="font-size:12px;margin-top:3px;">05</span>
+            <div>
+              <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Panel de operaciones</h3>
+              <p class="body-normal text-slate" style="font-size:14px;">Vista de presentes, ausentes, tareas, incidentes, documentos vencidos y actividad reciente por sede o cuadrilla.</p>
+            </div>
+          </div>
+          <div class="flex gap-5 py-6 border-t border-light md:pl-10 md:border-l">
+            <span class="mono text-muted flex-none" style="font-size:12px;margin-top:3px;">06</span>
+            <div>
+              <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Exportación de reportes</h3>
+              <p class="body-normal text-slate" style="font-size:14px;">Información lista para RR.HH., operaciones, auditorías internas y procesos de cumplimiento. Sin trabajo manual adicional.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="py-20 md:py-28 border-t border-light" style="background:#F8FAFC;" id="como-funciona">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="mb-14">
+          <div class="eyebrow mb-3">Cómo funciona</div>
+          <h2 class="h2 h2-resp text-navy" style="font-family:'Sora',sans-serif;max-width:540px;">Implementación simple para equipos que no trabajan frente a una computadora</h2>
+        </div>
+        <!-- Timeline Desktop -->
+        <div class="hidden md:flex items-start gap-0 relative">
+          <!-- Line -->
+          <div class="absolute top-6 left-6 right-6 h-px bg-light" style="background:#E4E7EC;"></div>
+          <div class="flex-1 relative pr-8">
+            <div class="w-12 h-12 border-2 border-light bg-white rounded-full flex items-center justify-center mb-6 relative z-10">
+              <span class="mono text-navy" style="font-size:13px;font-weight:600;">01</span>
+            </div>
+            <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Configura sedes y equipos</h3>
+            <p class="text-slate" style="font-size:14px;line-height:1.6;">Carga trabajadores, cuadrillas, turnos, obras, plantas o locales en el panel web.</p>
+          </div>
+          <div class="flex-1 relative px-4">
+            <div class="w-12 h-12 border-2 border-light bg-white rounded-full flex items-center justify-center mb-6 relative z-10" style="border-color:#175CD3;">
+              <span class="mono" style="font-size:13px;font-weight:600;color:#175CD3;">02</span>
+            </div>
+            <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">El trabajador usa la app</h3>
+            <p class="text-slate" style="font-size:14px;line-height:1.6;">Registra asistencia, tareas e incidentes desde Android, incluso sin internet.</p>
+          </div>
+          <div class="flex-1 relative px-4">
+            <div class="w-12 h-12 border-2 border-light bg-white rounded-full flex items-center justify-center mb-6 relative z-10">
+              <span class="mono text-navy" style="font-size:13px;font-weight:600;">03</span>
+            </div>
+            <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">El supervisor controla el día</h3>
+            <p class="text-slate" style="font-size:14px;line-height:1.6;">Revisa asistencia, avance, alertas y evidencias desde el panel web en tiempo real.</p>
+          </div>
+          <div class="flex-1 relative pl-8">
+            <div class="w-12 h-12 border-2 border-light bg-white rounded-full flex items-center justify-center mb-6 relative z-10">
+              <span class="mono text-navy" style="font-size:13px;font-weight:600;">04</span>
+            </div>
+            <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">La empresa descarga reportes</h3>
+            <p class="text-slate" style="font-size:14px;line-height:1.6;">RR.HH. y operaciones acceden a información ordenada, exportable y trazable.</p>
+          </div>
+        </div>
+        <!-- Timeline Mobile -->
+        <div class="md:hidden flex flex-col gap-0 relative pl-10">
+          <div class="absolute left-5 top-6 bottom-6 w-px" style="background:#E4E7EC;"></div>
+          <div class="relative pb-8">
+            <div class="absolute -left-10 w-10 h-10 border-2 border-light bg-white rounded-full flex items-center justify-center">
+              <span class="mono text-navy" style="font-size:12px;font-weight:600;">01</span>
+            </div>
+            <h3 class="h3 text-navy mb-1" style="font-size:15px;font-weight:600;">Configura sedes y equipos</h3>
+            <p class="text-slate" style="font-size:14px;">Carga trabajadores, cuadrillas, turnos, obras, plantas o locales.</p>
+          </div>
+          <div class="relative pb-8">
+            <div class="absolute -left-10 w-10 h-10 border-2 bg-white rounded-full flex items-center justify-center" style="border-color:#175CD3;">
+              <span class="mono" style="font-size:12px;font-weight:600;color:#175CD3;">02</span>
+            </div>
+            <h3 class="h3 text-navy mb-1" style="font-size:15px;font-weight:600;">El trabajador usa la app</h3>
+            <p class="text-slate" style="font-size:14px;">Registra asistencia, tareas e incidentes desde Android, incluso sin internet.</p>
+          </div>
+          <div class="relative pb-8">
+            <div class="absolute -left-10 w-10 h-10 border-2 border-light bg-white rounded-full flex items-center justify-center">
+              <span class="mono text-navy" style="font-size:12px;font-weight:600;">03</span>
+            </div>
+            <h3 class="h3 text-navy mb-1" style="font-size:15px;font-weight:600;">El supervisor controla el día</h3>
+            <p class="text-slate" style="font-size:14px;">Revisa asistencia, avance, alertas y evidencias desde el panel web.</p>
+          </div>
+          <div class="relative">
+            <div class="absolute -left-10 w-10 h-10 border-2 border-light bg-white rounded-full flex items-center justify-center">
+              <span class="mono text-navy" style="font-size:12px;font-weight:600;">04</span>
+            </div>
+            <h3 class="h3 text-navy mb-1" style="font-size:15px;font-weight:600;">La empresa descarga reportes</h3>
+            <p class="text-slate" style="font-size:14px;">RR.HH. y operaciones acceden a información exportable y trazable.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OFFLINE FIRST -->
+    <section class="py-20 md:py-28 bg-white border-t border-light">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="flex flex-col lg:flex-row gap-14 lg:gap-20 items-start">
+          <div class="flex-1 max-w-lg">
+            <div class="eyebrow mb-4">Diseñado para campo</div>
+            <h2 class="h2 text-navy mb-5" style="font-family:'Sora',sans-serif;font-size:clamp(28px,3.5vw,38px);letter-spacing:-0.025em;line-height:1.1;">Funciona donde la operación realmente ocurre</h2>
+            <p class="body-lg text-slate mb-8">
+              TRAKIA está pensado para trabajadores que están en obra, planta, almacén, ruta o sede externa. La app puede registrar información sin conexión y sincronizarla cuando recupera señal, sin perder ningún dato.
+            </p>
+            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=560&amp;q=80" alt="Trabajador de campo usando app móvil" class="rounded-lg w-full object-cover" style="height:240px;">
+          </div>
+          <!-- Checklist -->
+          <div class="flex-none w-full lg:w-80">
+            <div class="border border-light rounded-lg overflow-hidden">
+              <div class="px-5 py-4 border-b border-light">
+                <div class="caption font-semibold text-navy" style="font-size:12px;text-transform:uppercase;letter-spacing:0.08em;">Especificaciones técnicas</div>
+              </div>
+              <div class="divide-y">
+                <div class="px-5 py-3.5 flex items-center gap-3">
+                  <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;"></iconify-icon>
+                  <span style="font-size:14px;color:#101828;font-weight:500;">Android liviano</span>
+                </div>
+                <div class="px-5 py-3.5 flex items-center gap-3">
+                  <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;"></iconify-icon>
+                  <span style="font-size:14px;color:#101828;font-weight:500;">Registro sin conexión</span>
+                </div>
+                <div class="px-5 py-3.5 flex items-center gap-3">
+                  <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;"></iconify-icon>
+                  <span style="font-size:14px;color:#101828;font-weight:500;">Sincronización automática</span>
+                </div>
+                <div class="px-5 py-3.5 flex items-center gap-3">
+                  <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;"></iconify-icon>
+                  <span style="font-size:14px;color:#101828;font-weight:500;">Evidencia con foto</span>
+                </div>
+                <div class="px-5 py-3.5 flex items-center gap-3">
+                  <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;"></iconify-icon>
+                  <span style="font-size:14px;color:#101828;font-weight:500;">Ubicación GPS</span>
+                </div>
+                <div class="px-5 py-3.5 flex items-center gap-3">
+                  <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;"></iconify-icon>
+                  <span style="font-size:14px;color:#101828;font-weight:500;">Formularios simples</span>
+                </div>
+                <div class="px-5 py-3.5 flex items-center gap-3">
+                  <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;"></iconify-icon>
+                  <span style="font-size:14px;color:#101828;font-weight:500;">Bajo consumo de datos</span>
+                </div>
+                <div class="px-5 py-3.5 flex items-center gap-3">
+                  <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;"></iconify-icon>
+                  <span style="font-size:14px;color:#101828;font-weight:500;">Uso rápido para personal no técnico</span>
+                </div>
+              </div>
+              <div class="px-5 py-3 bg-blue-50 border-t border-light">
+                <span class="mono caption" style="font-size:11px;color:#175CD3;">Offline · pendiente de sincronizar → sincronizado hace 3 min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTORS -->
+    <section class="py-20 md:py-28 border-t border-light bg-white" id="sectores">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="mb-12">
+          <div class="eyebrow mb-3">Sectores</div>
+          <h2 class="h2 h2-resp text-navy mb-4" style="font-family:'Sora',sans-serif;">Para operaciones intensivas en mano de obra</h2>
+          <p class="body-normal text-slate" style="max-width:520px;font-size:16px;">TRAKIA es útil para empresas donde el trabajo ocurre fuera de una oficina y el control operativo depende de supervisores de campo.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-0">
+          <div class="lg:border-r border-light pt-6 pb-6 lg:pr-8 border-t lg:border-t-0">
+            <div class="mb-3">
+              <iconify-icon icon="solar:building-linear" width="24" style="stroke-width:1.5;color:#175CD3;"></iconify-icon>
+            </div>
+            <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Construcción</h3>
+            <p class="text-slate" style="font-size:13px;line-height:1.6;">Obras, cuadrillas, asistencia, incidentes, avance diario y documentos de personal en campo.</p>
+          </div>
+          <div class="lg:border-r border-light pt-6 pb-6 lg:px-8 border-t">
+            <div class="mb-3">
+              <iconify-icon icon="solar:settings-minimalistic-linear" width="24" style="stroke-width:1.5;color:#175CD3;"></iconify-icon>
+            </div>
+            <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Manufactura</h3>
+            <p class="text-slate" style="font-size:13px;line-height:1.6;">Turnos, planta, tareas operativas, asistencia, seguridad y reportes para supervisión.</p>
+          </div>
+          <div class="lg:border-r border-light pt-6 pb-6 lg:px-8 border-t">
+            <div class="mb-3">
+              <iconify-icon icon="solar:shield-check-linear" width="24" style="stroke-width:1.5;color:#175CD3;"></iconify-icon>
+            </div>
+            <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Seguridad privada</h3>
+            <p class="text-slate" style="font-size:13px;line-height:1.6;">Agentes en múltiples sedes, control de presencia, novedades, reportes e incidencias.</p>
+          </div>
+          <div class="lg:border-r border-light pt-6 pb-6 lg:px-8 border-t">
+            <div class="mb-3">
+              <iconify-icon icon="solar:tools-wrenches-linear" width="24" style="stroke-width:1.5;color:#175CD3;"></iconify-icon>
+            </div>
+            <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Facilities y mantenimiento</h3>
+            <p class="text-slate" style="font-size:13px;line-height:1.6;">Equipos distribuidos, tareas por sede, evidencias, checklists y cumplimiento de servicio.</p>
+          </div>
+          <div class="pt-6 pb-6 lg:pl-8 border-t">
+            <div class="mb-3">
+              <iconify-icon icon="solar:box-linear" width="24" style="stroke-width:1.5;color:#175CD3;"></iconify-icon>
+            </div>
+            <h3 class="h3 text-navy mb-2" style="font-size:16px;font-weight:600;">Logística y almacenes</h3>
+            <p class="text-slate" style="font-size:13px;line-height:1.6;">Personal por turno, picking, despacho, asistencia, novedades y seguimiento operativo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPLIANCE TABLE -->
+    <section class="py-20 md:py-28 border-t border-light" style="background:#F8FAFC;" id="cumplimiento">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <div>
+            <div class="eyebrow mb-3">Trazabilidad y cumplimiento</div>
+            <h2 class="h2 h2-resp text-navy mb-4" style="font-family:'Sora',sans-serif;">Evidencia ordenada cuando más importa</h2>
+            <p class="body-normal text-slate" style="max-width:520px;font-size:15px;">TRAKIA ayuda a mantener registros claros de asistencia, incidentes, documentos y actividad de campo. La empresa puede responder con mayor orden ante auditorías internas, supervisiones o fiscalizaciones.</p>
+          </div>
+        </div>
+        <!-- Table desktop -->
+        <div class="hidden md:block border border-light rounded-lg overflow-hidden bg-white">
+          <table class="w-full">
+            <thead>
+              <tr style="background:#F8FAFC;">
+                <th class="px-6 py-4 text-left border-b border-light" style="font-size:11px;color:#667085;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;width:28%;">Situación</th>
+                <th class="px-6 py-4 text-left border-b border-light" style="font-size:11px;color:#667085;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;width:36%;">Registro en TRAKIA</th>
+                <th class="px-6 py-4 text-left border-b border-light" style="font-size:11px;color:#667085;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Valor operativo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-light dashboard-row">
+                <td class="px-6 py-4" style="font-size:14px;color:#101828;font-weight:500;">Asistencia en campo</td>
+                <td class="px-6 py-4">
+                  <span class="mono" style="font-size:12px;color:#175CD3;">Check-in con hora y GPS</span>
+                </td>
+                <td class="px-6 py-4" style="font-size:13px;color:#475467;">Menos disputas y consolidación manual</td>
+              </tr>
+              <tr class="border-b border-light dashboard-row">
+                <td class="px-6 py-4" style="font-size:14px;color:#101828;font-weight:500;">Incidente o casi-incidente</td>
+                <td class="px-6 py-4">
+                  <span class="mono" style="font-size:12px;color:#175CD3;">Foto, descripción, hora y ubicación</span>
+                </td>
+                <td class="px-6 py-4" style="font-size:13px;color:#475467;">Evidencia ordenada y trazable</td>
+              </tr>
+              <tr class="border-b border-light dashboard-row">
+                <td class="px-6 py-4" style="font-size:14px;color:#101828;font-weight:500;">Documento por vencer</td>
+                <td class="px-6 py-4">
+                  <span class="mono" style="font-size:12px;color:#175CD3;">Alertas a 30, 15 y 7 días</span>
+                </td>
+                <td class="px-6 py-4" style="font-size:13px;color:#475467;">Menos riesgo administrativo</td>
+              </tr>
+              <tr class="border-b border-light dashboard-row">
+                <td class="px-6 py-4" style="font-size:14px;color:#101828;font-weight:500;">Tarea no completada</td>
+                <td class="px-6 py-4">
+                  <span class="mono" style="font-size:12px;color:#175CD3;">Estado, comentario y responsable</span>
+                </td>
+                <td class="px-6 py-4" style="font-size:13px;color:#475467;">Seguimiento oportuno</td>
+              </tr>
+              <tr class="dashboard-row">
+                <td class="px-6 py-4" style="font-size:14px;color:#101828;font-weight:500;">Reporte mensual</td>
+                <td class="px-6 py-4">
+                  <span class="mono" style="font-size:12px;color:#175CD3;">Exportación centralizada</span>
+                </td>
+                <td class="px-6 py-4" style="font-size:13px;color:#475467;">Menos Excel manual</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Table mobile: stacked -->
+        <div class="md:hidden space-y-3">
+          <div class="border border-light rounded-lg p-4 bg-white">
+            <div class="caption text-muted mb-1" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Situación</div>
+            <div class="text-navy font-medium mb-2" style="font-size:14px;">Asistencia en campo</div>
+            <div class="mono mb-1" style="font-size:12px;color:#175CD3;">Check-in con hora y GPS</div>
+            <div class="text-slate" style="font-size:13px;">Menos disputas y consolidación manual</div>
+          </div>
+          <div class="border border-light rounded-lg p-4 bg-white">
+            <div class="caption text-muted mb-1" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Situación</div>
+            <div class="text-navy font-medium mb-2" style="font-size:14px;">Incidente o casi-incidente</div>
+            <div class="mono mb-1" style="font-size:12px;color:#175CD3;">Foto, descripción, hora y ubicación</div>
+            <div class="text-slate" style="font-size:13px;">Evidencia ordenada y trazable</div>
+          </div>
+          <div class="border border-light rounded-lg p-4 bg-white">
+            <div class="caption text-muted mb-1" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Situación</div>
+            <div class="text-navy font-medium mb-2" style="font-size:14px;">Documento por vencer</div>
+            <div class="mono mb-1" style="font-size:12px;color:#175CD3;">Alertas a 30, 15 y 7 días</div>
+            <div class="text-slate" style="font-size:13px;">Menos riesgo administrativo</div>
+          </div>
+          <div class="border border-light rounded-lg p-4 bg-white">
+            <div class="caption text-muted mb-1" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Situación</div>
+            <div class="text-navy font-medium mb-2" style="font-size:14px;">Tarea no completada</div>
+            <div class="mono mb-1" style="font-size:12px;color:#175CD3;">Estado, comentario y responsable</div>
+            <div class="text-slate" style="font-size:13px;">Seguimiento oportuno</div>
+          </div>
+          <div class="border border-light rounded-lg p-4 bg-white">
+            <div class="caption text-muted mb-1" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Situación</div>
+            <div class="text-navy font-medium mb-2" style="font-size:14px;">Reporte mensual</div>
+            <div class="mono mb-1" style="font-size:12px;color:#175CD3;">Exportación centralizada</div>
+            <div class="text-slate" style="font-size:13px;">Menos Excel manual</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUTCOMES -->
+    <section class="py-20 md:py-28 bg-white border-t border-light">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="flex flex-col lg:flex-row gap-14 lg:gap-20 items-start">
+          <div class="flex-none lg:w-80">
+            <div class="eyebrow mb-4">Resultados</div>
+            <h2 class="h2 text-navy" style="font-family:'Sora',sans-serif;font-size:clamp(28px,3.5vw,38px);letter-spacing:-0.025em;line-height:1.1;">Menos trabajo manual. Más control operativo.</h2>
+            <div class="mt-8">
+              <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=480&amp;q=80" alt="Equipo de supervisión revisando datos operativos" class="rounded-lg w-full object-cover" style="height:200px;">
+            </div>
+          </div>
+          <div class="flex-1">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+              <div class="flex gap-3 py-4 border-t border-light md:pr-8">
+                <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;margin-top:2px;"></iconify-icon>
+                <p style="font-size:15px;color:#101828;line-height:1.55;">Reducir consolidación manual de asistencia y reportes</p>
+              </div>
+              <div class="flex gap-3 py-4 border-t border-light md:pl-8 md:border-l">
+                <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;margin-top:2px;"></iconify-icon>
+                <p style="font-size:15px;color:#101828;line-height:1.55;">Mejorar visibilidad diaria para supervisores y gerencias</p>
+              </div>
+              <div class="flex gap-3 py-4 border-t border-light md:pr-8">
+                <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;margin-top:2px;"></iconify-icon>
+                <p style="font-size:15px;color:#101828;line-height:1.55;">Ordenar evidencias de incidentes y novedades de campo</p>
+              </div>
+              <div class="flex gap-3 py-4 border-t border-light md:pl-8 md:border-l">
+                <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;margin-top:2px;"></iconify-icon>
+                <p style="font-size:15px;color:#101828;line-height:1.55;">Controlar documentos críticos del trabajador con alertas</p>
+              </div>
+              <div class="flex gap-3 py-4 border-t border-light md:pr-8">
+                <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;margin-top:2px;"></iconify-icon>
+                <p style="font-size:15px;color:#101828;line-height:1.55;">Disminuir dependencia de papel, llamadas y WhatsApp</p>
+              </div>
+              <div class="flex gap-3 py-4 border-t border-light md:pl-8 md:border-l">
+                <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;margin-top:2px;"></iconify-icon>
+                <p style="font-size:15px;color:#101828;line-height:1.55;">Acelerar reportes para RR.HH. y operaciones</p>
+              </div>
+              <div class="flex gap-3 py-4 border-t border-light md:pr-8">
+                <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;margin-top:2px;"></iconify-icon>
+                <p style="font-size:15px;color:#101828;line-height:1.55;">Medir avance y cumplimiento por sede, cuadrilla o trabajador</p>
+              </div>
+              <div class="flex gap-3 py-4 border-t border-light md:pl-8 md:border-l">
+                <iconify-icon icon="solar:check-circle-linear" width="18" style="stroke-width:1.5;color:#16803C;flex-shrink:0;margin-top:2px;"></iconify-icon>
+                <p style="font-size:15px;color:#101828;line-height:1.55;">Escalar control sin aumentar carga administrativa</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="py-20 md:py-28 border-t border-light" style="background:#F8FAFC;">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="mb-12">
+          <div class="eyebrow mb-3">Modelo</div>
+          <h2 class="h2 h2-resp text-navy mb-4" style="font-family:'Sora',sans-serif;">Precio simple por trabajador activo</h2>
+          <p class="body-normal text-slate" style="max-width:520px;font-size:15px;">TRAKIA crece con tu operación. Pagas por trabajador activo en la plataforma, con implementación y acompañamiento para que el equipo adopte el sistema desde el primer día.</p>
+        </div>
+        <!-- Pricing rows -->
+        <div class="space-y-0 border border-light rounded-lg overflow-hidden bg-white">
+          <!-- Headers -->
+          <div class="hidden md:grid grid-cols-3 border-b border-light px-6 py-3" style="background:#F8FAFC;">
+            <div style="font-size:11px;color:#667085;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Plan</div>
+            <div style="font-size:11px;color:#667085;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Incluye</div>
+            <div style="font-size:11px;color:#667085;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Precio</div>
+          </div>
+          <!-- Row 1 -->
+          <div class="grid grid-cols-1 md:grid-cols-3 border-b border-light">
+            <div class="px-6 py-5 md:border-r border-light">
+              <div class="caption text-muted mb-1" style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">Base</div>
+              <h3 class="h3 text-navy" style="font-size:18px;font-weight:600;">Plan Base</h3>
+              <p class="text-slate" style="font-size:13px;margin-top:4px;">Para operaciones que inician con control de asistencia.</p>
+            </div>
+            <div class="px-6 py-5 md:border-r border-light">
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-slate-400"></div><span style="font-size:13px;color:#475467;">Check-in/out con GPS</span></div>
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-slate-400"></div><span style="font-size:13px;color:#475467;">App offline-first</span></div>
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-slate-400"></div><span style="font-size:13px;color:#475467;">Panel supervisor</span></div>
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-slate-400"></div><span style="font-size:13px;color:#475467;">Reportes básicos</span></div>
+              </div>
+            </div>
+            <div class="px-6 py-5 flex items-center gap-3">
+              <div>
+                <div class="mono text-navy" style="font-size:22px;font-weight:600;">S/12</div>
+                <div style="font-size:12px;color:#667085;">por trabajador activo / mes</div>
+              </div>
+            </div>
+          </div>
+          <!-- Row 2: highlighted -->
+          <div class="grid grid-cols-1 md:grid-cols-3 border-b border-light pricing-highlight relative">
+            <div class="absolute top-0 left-0 right-0 h-0.5" style="background:#175CD3;"></div>
+            <div class="px-6 py-5 md:border-r border-light">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="caption text-muted" style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">Operativo</div>
+                <span class="status-blue px-2 py-0.5 rounded" style="font-size:10px;font-weight:600;">Más elegido</span>
+              </div>
+              <h3 class="h3 text-navy" style="font-size:18px;font-weight:600;">Plan Operativo</h3>
+              <p class="text-slate" style="font-size:13px;margin-top:4px;">Para supervisores que necesitan control completo del día.</p>
+            </div>
+            <div class="px-6 py-5 md:border-r border-light">
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full" style="background:#175CD3;"></div><span style="font-size:13px;color:#475467;">Todo lo del plan Base</span></div>
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full" style="background:#175CD3;"></div><span style="font-size:13px;color:#475467;">Tareas y avance</span></div>
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full" style="background:#175CD3;"></div><span style="font-size:13px;color:#475467;">Incidentes con foto</span></div>
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full" style="background:#175CD3;"></div><span style="font-size:13px;color:#475467;">Alertas operativas</span></div>
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full" style="background:#175CD3;"></div><span style="font-size:13px;color:#475467;">Exportaciones</span></div>
+              </div>
+            </div>
+            <div class="px-6 py-5 flex items-center gap-3">
+              <div>
+                <div class="mono" style="font-size:22px;font-weight:600;color:#175CD3;">S/15</div>
+                <div style="font-size:12px;color:#667085;">por trabajador activo / mes</div>
+              </div>
+            </div>
+          </div>
+          <!-- Row 3 -->
+          <div class="grid grid-cols-1 md:grid-cols-3">
+            <div class="px-6 py-5 md:border-r border-light">
+              <div class="caption text-muted mb-1" style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">Cumplimiento</div>
+              <h3 class="h3 text-navy" style="font-size:18px;font-weight:600;">Plan Cumplimiento</h3>
+              <p class="text-slate" style="font-size:13px;margin-top:4px;">Para empresas con requerimientos documentales y trazabilidad.</p>
+            </div>
+            <div class="px-6 py-5 md:border-r border-light">
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-slate-400"></div><span style="font-size:13px;color:#475467;">Todo lo del plan Operativo</span></div>
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-slate-400"></div><span style="font-size:13px;color:#475467;">Gestión documental</span></div>
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-slate-400"></div><span style="font-size:13px;color:#475467;">Alertas de vencimiento</span></div>
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-slate-400"></div><span style="font-size:13px;color:#475467;">Reportes avanzados</span></div>
+                <div class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-slate-400"></div><span style="font-size:13px;color:#475467;">Evidencia trazable</span></div>
+              </div>
+            </div>
+            <div class="px-6 py-5 flex items-center gap-3">
+              <div>
+                <div class="mono text-navy" style="font-size:22px;font-weight:600;">S/18</div>
+                <div style="font-size:12px;color:#667085;">por trabajador activo / mes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <p class="text-muted" style="font-size:13px;">Implementación inicial según tamaño de empresa. Sin costos ocultos.</p>
+          <a href="#contacto" class="btn-primary px-5 py-2.5 text-sm flex-none">Solicitar cotización</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-20 md:py-28 bg-white border-t border-light">
+      <div class="max-w-4xl mx-auto px-6 md:px-10">
+        <div class="mb-12">
+          <div class="eyebrow mb-3">Preguntas frecuentes</div>
+          <h2 class="h2 h2-resp text-navy" style="font-family:'Sora',sans-serif;">Antes de implementar TRAKIA</h2>
+        </div>
+        <div id="faq-container" class="space-y-0">
+
+          <div class="border-t border-light">
+            <button onclick="toggleFAQ(0)" class="w-full flex items-center justify-between py-5 text-left">
+              <span class="text-navy font-medium" style="font-size:16px;font-family:'Sora',sans-serif;">¿TRAKIA es solo una app de asistencia?</span>
+              <span class="accordion-icon flex-none ml-4 text-slate" id="icon-0" style="font-size:20px;line-height:1;font-weight:300;">+</span>
+            </button>
+            <div class="accordion-content" id="faq-0">
+              <p class="text-slate pb-5" style="font-size:15px;line-height:1.65;">No. La asistencia es una parte del sistema. TRAKIA también permite registrar tareas, incidentes, documentos, alertas y reportes para tener trazabilidad completa de la operación de campo.</p>
+            </div>
+          </div>
+
+          <div class="border-t border-light">
+            <button onclick="toggleFAQ(1)" class="w-full flex items-center justify-between py-5 text-left">
+              <span class="text-navy font-medium" style="font-size:16px;font-family:'Sora',sans-serif;">¿Funciona si el trabajador no tiene internet?</span>
+              <span class="accordion-icon flex-none ml-4 text-slate" id="icon-1" style="font-size:20px;line-height:1;font-weight:300;">+</span>
+            </button>
+            <div class="accordion-content" id="faq-1">
+              <p class="text-slate pb-5" style="font-size:15px;line-height:1.65;">Sí. La app está diseñada para funcionar sin conexión. Los registros se guardan en el dispositivo y se sincronizan cuando vuelve la señal, sin intervención del usuario.</p>
+            </div>
+          </div>
+
+          <div class="border-t border-light">
+            <button onclick="toggleFAQ(2)" class="w-full flex items-center justify-between py-5 text-left">
+              <span class="text-navy font-medium" style="font-size:16px;font-family:'Sora',sans-serif;">¿El trabajador necesita capacitación técnica?</span>
+              <span class="accordion-icon flex-none ml-4 text-slate" id="icon-2" style="font-size:20px;line-height:1;font-weight:300;">+</span>
+            </button>
+            <div class="accordion-content" id="faq-2">
+              <p class="text-slate pb-5" style="font-size:15px;line-height:1.65;">No. La app está pensada para uso rápido desde Android, con pantallas simples y acciones claras como registrar entrada, completar tarea o reportar incidente. No se requiere experiencia técnica.</p>
+            </div>
+          </div>
+
+          <div class="border-t border-light">
+            <button onclick="toggleFAQ(3)" class="w-full flex items-center justify-between py-5 text-left">
+              <span class="text-navy font-medium" style="font-size:16px;font-family:'Sora',sans-serif;">¿Qué ve el supervisor?</span>
+              <span class="accordion-icon flex-none ml-4 text-slate" id="icon-3" style="font-size:20px;line-height:1;font-weight:300;">+</span>
+            </button>
+            <div class="accordion-content" id="faq-3">
+              <p class="text-slate pb-5" style="font-size:15px;line-height:1.65;">El supervisor puede ver presentes, ausentes, tareas pendientes, incidentes, alertas y actividad reciente desde un panel web en tiempo real.</p>
+            </div>
+          </div>
+
+          <div class="border-t border-light">
+            <button onclick="toggleFAQ(4)" class="w-full flex items-center justify-between py-5 text-left">
+              <span class="text-navy font-medium" style="font-size:16px;font-family:'Sora',sans-serif;">¿TRAKIA reemplaza a RR.HH.?</span>
+              <span class="accordion-icon flex-none ml-4 text-slate" id="icon-4" style="font-size:20px;line-height:1;font-weight:300;">+</span>
+            </button>
+            <div class="accordion-content" id="faq-4">
+              <p class="text-slate pb-5" style="font-size:15px;line-height:1.65;">No. TRAKIA le da a RR.HH. y operaciones información más ordenada, rápida y trazable para reducir trabajo manual. Las decisiones siguen siendo de las personas.</p>
+            </div>
+          </div>
+
+          <div class="border-t border-light">
+            <button onclick="toggleFAQ(5)" class="w-full flex items-center justify-between py-5 text-left">
+              <span class="text-navy font-medium" style="font-size:16px;font-family:'Sora',sans-serif;">¿Sirve para empresas con varias sedes u obras?</span>
+              <span class="accordion-icon flex-none ml-4 text-slate" id="icon-5" style="font-size:20px;line-height:1;font-weight:300;">+</span>
+            </button>
+            <div class="accordion-content" id="faq-5">
+              <p class="text-slate pb-5" style="font-size:15px;line-height:1.65;">Sí. TRAKIA permite organizar trabajadores por sede, obra, cuadrilla, turno o unidad operativa, con visibilidad consolidada o por unidad.</p>
+            </div>
+          </div>
+
+          <div class="border-t border-light">
+            <button onclick="toggleFAQ(6)" class="w-full flex items-center justify-between py-5 text-left">
+              <span class="text-navy font-medium" style="font-size:16px;font-family:'Sora',sans-serif;">¿Se puede empezar con pocas funciones?</span>
+              <span class="accordion-icon flex-none ml-4 text-slate" id="icon-6" style="font-size:20px;line-height:1;font-weight:300;">+</span>
+            </button>
+            <div class="accordion-content" id="faq-6">
+              <p class="text-slate pb-5" style="font-size:15px;line-height:1.65;">Sí. La implementación puede iniciar con asistencia e incidentes, y luego activar tareas, documentos y reportes según la necesidad de la empresa.</p>
+            </div>
+          </div>
+
+          <div class="border-t border-b border-light">
+            <button onclick="toggleFAQ(7)" class="w-full flex items-center justify-between py-5 text-left">
+              <span class="text-navy font-medium" style="font-size:16px;font-family:'Sora',sans-serif;">¿Qué tipo de empresas deberían usarlo?</span>
+              <span class="accordion-icon flex-none ml-4 text-slate" id="icon-7" style="font-size:20px;line-height:1;font-weight:300;">+</span>
+            </button>
+            <div class="accordion-content" id="faq-7">
+              <p class="text-slate pb-5" style="font-size:15px;line-height:1.65;">Empresas con trabajadores en campo, obra, planta, almacén, rutas, sedes externas o turnos operativos donde el control depende de supervisores y la información tarda en llegar a oficina.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA + CONTACT FORM -->
+    <section class="py-20 md:py-28 border-t border-light" style="background:#F5F8FF;" id="contacto">
+      <div class="max-w-6xl mx-auto px-6 md:px-10">
+        <div class="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start">
+          <!-- Left: CTA text -->
+          <div class="flex-1 max-w-lg">
+            <div class="eyebrow mb-4">Empieza hoy</div>
+            <h2 class="h2 text-navy mb-5" style="font-family:'Sora',sans-serif;font-size:clamp(28px,3.5vw,40px);letter-spacing:-0.025em;line-height:1.1;">
+              Digitaliza tu operación de campo sin cambiar la forma en que tu equipo trabaja
+            </h2>
+            <p class="body-normal text-slate mb-8" style="font-size:16px;max-width:420px;">
+              TRAKIA convierte asistencia, tareas, incidentes y documentos en información trazable para supervisores, RR.HH. y gerencias.
+            </p>
+            <div class="flex flex-wrap gap-3 mb-8">
+              <a href="#" class="btn-primary px-6 py-3 text-sm">Solicitar demo</a>
+              <a href="https://wa.me/51999000000" class="btn-secondary px-6 py-3 text-sm flex items-center gap-2">
+                <iconify-icon icon="solar:chat-round-linear" width="16" style="stroke-width:1.5;"></iconify-icon>
+                Hablar por WhatsApp
+              </a>
+            </div>
+            <div class="caption text-muted" style="font-size:12px;">Implementación progresiva · App Android · Panel web · Soporte en español</div>
+            <div class="mt-10 pt-8 border-t border-light">
+              <img src="https://images.unsplash.com/photo-1664575599736-c5197c684128?w=480&amp;q=80" alt="Supervisor de planta con tablet revisando operaciones" class="rounded-lg w-full object-cover" style="height:220px;">
+            </div>
+          </div>
+          <!-- Right: Form -->
+          <div class="flex-1 w-full max-w-lg lg:max-w-none">
+            <div class="bg-white border border-light rounded-xl p-7 md:p-8">
+              <div class="h3 text-navy mb-1" style="font-size:17px;font-weight:600;font-family:'Sora',sans-serif;">Solicitar demostración</div>
+              <p class="text-muted mb-6" style="font-size:13px;">Cuéntanos sobre tu operación y te contactamos en menos de 24h.</p>
+              <form onsubmit="handleSubmit(event)" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block mb-1.5 text-navy font-medium" style="font-size:13px;">Nombre <span style="color:#B42318;">*</span></label>
+                    <input type="text" placeholder="Juan Pérez" class="w-full border border-light rounded-lg px-4 bg-white text-navy" style="height:44px;font-size:14px;" required="">
+                  </div>
+                  <div>
+                    <label class="block mb-1.5 text-navy font-medium" style="font-size:13px;">Empresa <span style="color:#B42318;">*</span></label>
+                    <input type="text" placeholder="Constructora S.A.C." class="w-full border border-light rounded-lg px-4 bg-white text-navy" style="height:44px;font-size:14px;" required="">
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block mb-1.5 text-navy font-medium" style="font-size:13px;">Cargo</label>
+                    <input type="text" placeholder="Gerente de Operaciones" class="w-full border border-light rounded-lg px-4 bg-white text-navy" style="height:44px;font-size:14px;">
+                  </div>
+                  <div>
+                    <label class="block mb-1.5 text-navy font-medium" style="font-size:13px;">Correo <span style="color:#B42318;">*</span></label>
+                    <input type="email" placeholder="juan@empresa.com" class="w-full border border-light rounded-lg px-4 bg-white text-navy" style="height:44px;font-size:14px;" required="">
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block mb-1.5 text-navy font-medium" style="font-size:13px;">Teléfono / WhatsApp</label>
+                    <input type="tel" placeholder="+51 999 000 000" class="w-full border border-light rounded-lg px-4 bg-white text-navy" style="height:44px;font-size:14px;">
+                  </div>
+                  <div>
+                    <label class="block mb-1.5 text-navy font-medium" style="font-size:13px;">N° de trabajadores</label>
+                    <input type="text" placeholder="Ej: 50–200" class="w-full border border-light rounded-lg px-4 bg-white text-navy" style="height:44px;font-size:14px;">
+                  </div>
+                </div>
+                <div>
+                  <label class="block mb-1.5 text-navy font-medium" style="font-size:13px;">Sector</label>
+                  <div class="relative">
+                    <select class="w-full border border-light rounded-lg px-4 bg-white text-navy appearance-none pr-8" style="height:44px;font-size:14px;color:#101828;">
+                      <option value="" style="color:#667085;">Selecciona tu sector</option>
+                      <option>Construcción</option>
+                      <option>Manufactura</option>
+                      <option>Seguridad privada</option>
+                      <option>Facilities y mantenimiento</option>
+                      <option>Logística y almacenes</option>
+                      <option>Otro</option>
+                    </select>
+                    <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <iconify-icon icon="solar:alt-arrow-down-linear" width="16" style="stroke-width:1.5;color:#667085;"></iconify-icon>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label class="block mb-1.5 text-navy font-medium" style="font-size:13px;">Mensaje</label>
+                  <textarea rows="3" placeholder="Cuéntanos sobre tu operación..." class="w-full border border-light rounded-lg px-4 py-3 bg-white text-navy resize-none" style="font-size:14px;"></textarea>
+                </div>
+                <button type="submit" class="btn-primary w-full py-3 text-sm flex items-center justify-center gap-2">
+                  <iconify-icon icon="solar:letter-linear" width="16" style="stroke-width:1.5;"></iconify-icon>
+                  Solicitar demo
+                </button>
+                <p class="text-center text-muted" style="font-size:12px;">Respuesta en menos de 24 horas hábiles.</p>
+              </form>
+              <div id="form-success" class="hidden text-center py-6">
+                <iconify-icon icon="solar:check-circle-linear" width="40" style="stroke-width:1.5;color:#16803C;"></iconify-icon>
+                <p class="text-navy font-semibold mt-3" style="font-size:16px;font-family:'Sora',sans-serif;">¡Solicitud enviada!</p>
+                <p class="text-slate mt-1" style="font-size:14px;">Te contactaremos en menos de 24h.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-light" style="background:#F8FAFC;">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 py-14 md:py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
+        <!-- Brand -->
+        <div>
+          <span class="block text-navy font-bold mb-3" style="font-family:'Sora',sans-serif;font-size:17px;letter-spacing:-0.03em;">TRAKIA</span>
+          <p class="text-slate" style="font-size:13px;line-height:1.65;max-width:200px;">Sistema de operaciones para trabajadores de campo.</p>
+        </div>
+        <!-- Producto -->
+        <div>
+          <div class="caption text-muted mb-4" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Producto</div>
+          <div class="space-y-2.5">
+            <a href="#" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">Asistencia</a>
+            <a href="#" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">Tareas</a>
+            <a href="#" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">Incidentes</a>
+            <a href="#" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">Documentos</a>
+            <a href="#" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">Reportes</a>
+          </div>
+        </div>
+        <!-- Sectores -->
+        <div>
+          <div class="caption text-muted mb-4" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Sectores</div>
+          <div class="space-y-2.5">
+            <a href="#" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">Construcción</a>
+            <a href="#" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">Manufactura</a>
+            <a href="#" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">Seguridad</a>
+            <a href="#" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">Facilities</a>
+            <a href="#" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">Logística</a>
+          </div>
+        </div>
+        <!-- Contacto -->
+        <div>
+          <div class="caption text-muted mb-4" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Contacto</div>
+          <div class="space-y-2.5">
+            <a href="#contacto" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">Solicitar demo</a>
+            <a href="https://wa.me/51999000000" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">WhatsApp</a>
+            <a href="mailto:contacto@fieldsync.app" class="block text-slate hover:text-navy transition-colors" style="font-size:14px;">contacto@fieldsync.app</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-light">
+      <div class="max-w-6xl mx-auto px-6 md:px-10 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <span class="text-muted" style="font-size:13px;">© 2026 TRAKIA. Todos los derechos reservados.</span>
+        <div class="flex gap-5">
+          <a href="#" class="text-muted hover:text-slate transition-colors" style="font-size:13px;">Privacidad</a>
+          <a href="#" class="text-muted hover:text-slate transition-colors" style="font-size:13px;">Términos</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu toggle
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('open');
+      document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+    }
+
+    // FAQ accordion
+    function toggleFAQ(index) {
+      const content = document.getElementById('faq-' + index);
+      const icon = document.getElementById('icon-' + index);
+      const isOpen = content.classList.contains('open');
+
+      // Close all
+      document.querySelectorAll('.accordion-content').forEach((el, i) => {
+        el.classList.remove('open');
+        const ic = document.getElementById('icon-' + i);
+        if (ic) ic.textContent = '+';
+      });
+
+      // Open clicked if was closed
+      if (!isOpen) {
+        content.classList.add('open');
+        icon.textContent = '×';
+      }
+    }
+
+    // Form submit
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const success = document.getElementById('form-success');
+      form.style.display = 'none';
+      success.classList.remove('hidden');
+    }
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+
+</body></html>
