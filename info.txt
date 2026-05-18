@@ -1,0 +1,199 @@
+Tesis central
+Las empresas intensivas en mano de obra operan con trabajadores de campo que no tienen computadora. Su dia a dia — incidentes, avance de tareas, asistencia, reportes de seguridad — vive en papel y WhatsApp. TRAKIA convierte esa operacion dispersa en un sistema digital, trazable y en tiempo real, cobrando por cada trabajador activo en la plataforma.
+
+Dato clave	Magnitud	Fuente
+Trabajadores manufactura Lima (2025)	755,600	SNI / INEI 2026
+Trabajadores construccion Peru	1,163,300	INEI 2025
+Empleo minero via contratistas	70% del total	MINEM 2025
+Empresas seguridad privada Lima	+600 medianas	SUCAMEC 2025
+Empresas con problemas de talento digital	91%	Apoyo Consultoria 2025
+Crecimiento empleo manufactura Lima	3.6% anual	SNI enero 2026
+Multa SUNAFIL por incidente sin trazabilidad	Hasta S/100,000	SUNAFIL 2025
+
+1.	Resumen ejecutivo
+ 
+TRAKIA es una plataforma B2B con modelo de precio por empleado que ayuda a empresas de construccion, manufactura, seguridad privada y facilities a digitalizar la operacion de sus trabajadores de campo. El objetivo no es ser otro software de RRHH: TRAKIA opera como un sistema de control operativo en tiempo real para personas que no tienen computadora — con una app movil offline-first en Android que funciona sin internet y sincroniza cuando hay senal.
+Pitch de una frase
+Ayudamos a empresas con trabajadores de campo a reemplazar el papel y el WhatsApp por un sistema digital de operaciones que genera trazabilidad, cumplimiento SUNAFIL y visibilidad en tiempo real, cobrado a S/12–18 por trabajador activo al mes.
+2.	Problema
+ 
+Las empresas peruanas con 100 a 2,000 trabajadores en campo operan con informacion fragmentada. El supervisor de obra llega al dia siguiente con datos de hace 12 horas. El gerente de operaciones no sabe en tiempo real cuantos trabajadores estan en sitio, quienes llegaron tarde, que incidentes ocurrieron o cuanto avanzaron las tareas del dia. Cuando SUNAFIL fiscaliza y no hay registros, la multa puede superar los S/80,000 por incidente.
+
+
+
+
+Dolor del trabajador de campo	Impacto operativo
+Reportes en papel y WhatsApp	El supervisor pierde 2-3 horas al dia consolidando informacion; los datos llegan tarde y con errores.
+Sin trazabilidad de incidentes	SUNAFIL puede multar hasta S/100,000 si no hay registro documentado de accidente o casi-accidente.
+Asistencia manual o con reloj biometrico de oficina	Trabajadores de campo no tienen punto de fichaje; se pierde control de horas extra y tardanzas.
+Tareas asignadas por llamada o cuaderno	No hay evidencia de quien hizo que, cuando y donde; imposible calcular productividad real.
+Sin visibilidad del avance de obra o produccion	El gerente toma decisiones con datos cualitativos de reunion semanal, no con metricas diarias.
+Documentos del trabajador vencidos	SCTR, examenes medicos y certificaciones vencidas exponen a la empresa a sanciones.
+
+3.	Cliente objetivo
+ 
+Beachhead inicial
+Empresas constructoras y de manufactura en Lima con 100 a 800 trabajadores de campo que no tienen software de operaciones, o usan soluciones genericas de escritorio que sus trabajadores no pueden usar en obra.
+•	Tienen nomina formal con 100+ trabajadores registrados en PLAME.
+•	Sus trabajadores operan fuera de oficina: obra, planta, almacen, sitio minero.
+•	El area de RRHH tiene 1 a 3 personas gestionando manualmente la asistencia y reportes.
+•	Estan expuestos a fiscalizacion de SUNAFIL, OSINERGMIN o el Ministerio de Trabajo.
+•	No pueden pagar soluciones enterprise como SAP o Workday ($30-80/usuario/mes en ingles).
+•	El decisor de compra es el Gerente de Operaciones o el Gerente General.
+Segmento	Por que importa	Momento de entrada
+Constructoras medianas (100-800 trabajadores)	Alta exposicion SUNAFIL; obra dispersa; informe de avance critico.	Inicio
+Manufactura Lima (plantas industriales)	Turnos rotativos, control de productividad, cumplimiento de SST.	Inicio
+Empresas seguridad privada
+(100-500 agentes)	Personal disperso en multiples locales; rotacion alta; documentacion critica.	Expansion 1
+Empresas de facilities (limpieza, mantenimiento)	Personal en decenas de sedes; verificacion de presencia y tarea.	Expansion 2
+Operadores logisticos y almacenes	Control de picking, despacho y personal en turno.	Expansion 3
+Proyectos de infraestructura publica	Trazabilidad de avance para entidades supervisoras.	Expansion 4
+
+4.	Solucion: TRAKIA
+ 
+TRAKIA funciona como un Operations OS para trabajadores de campo. El trabajador no necesita computadora ni capacitacion extensa: descarga una app Android liviana, registra su llegada con GPS, completa sus tareas del dia y reporta incidentes con foto. El supervisor ve todo en un panel web en tiempo real. El area de RRHH descarga los reportes para PLAME y SUNAFIL en un clic.
+Modulo	Que hace	Valor para el cliente
+1. Check-in/out con GPS offline	El trabajador registra entrada y salida desde su celular Android. Funciona sin internet y sincroniza al recuperar senal.	Elimina papel, fraude de marcacion y disputas de horas extra.
+2. Asignacion y seguimiento de tareas	El supervisor asigna tareas diarias desde el panel web; el trabajador las confirma o reporta problema desde la app.	Reemplaza cuadernos y llamadas; genera evidencia de ejecucion.
+3. Reporte inteligente de incidentes con IA	El trabajador reporta incidentes por voz o foto desde la app. La IA convierte automáticamente el audio en un reporte estructurado con ubicación, tipo de incidente y riesgo asociado en menos de 60 segundos.
+	Reduce errores, elimina el tipeo en campo y genera trazabilidad auditables SUNAFIL-ready en tiempo real.
+4. Panel de operaciones en tiempo real	El supervisor ve quien esta en sitio, avance por tarea, alertas de tardanza o ausencia, y mapa de ubicaciones.	Toma de decisiones con datos del momento, no del dia siguiente.
+5. Gestion de documentos del trabajador	Carga de SCTR, examen medico y certificados con alerta automatica de vencimiento 30, 15 y 7 dias antes.	Elimina el riesgo de trabajador habilitado con documentos vencidos.
+6. Exportacion PLAME y reporte
+SUNAFIL	Genera el reporte de asistencia y horas extra en el formato exacto de la planilla electronica.	Ahorra 8-12 horas mensuales al area de RRHH.
+
+Ejemplo de experiencia
+Una constructora con 350 trabajadores en tres obras en Lima implementa TRAKIA. Cada manana los trabajadores hacen check-in desde su celular en la entrada de la obra. El jefe de obra asigna tareas por cuadrilla desde el panel web. A las 10am hay un casi-accidente: el trabajador documenta el incidente con nota de voz y foto en 45 segundos. El gerente de operaciones lo ve en tiempo real desde Miraflores. Al mes, el area de RRHH descarga el reporte de asistencia para PLAME sin tocar un Excel.
+5.	Producto minimo viable
+ 
+El MVP no empieza con todas las funciones. Empieza con el modulo de mayor dolor inmediato — check-in GPS y reporte de incidentes — y agrega modulos en funcion de lo que los primeros clientes priorizan.
+Semana	Que se construye / valida	Resultado esperado
+1	Entrevistas a 10 supervisores y gerentes de operaciones en construccion y manufactura.	Dolor validado y funciones priorizadas por urgencia.
+2	App Android basica: check-in GPS offline + reporte de incidente con nota de voz y foto.	Primer prototipo funcional en manos de trabajadores reales.
+3	Panel web supervisor: lista de presentes, mapa, alertas de ausencia.	El supervisor adopta el sistema sin necesidad de capacitar al trabajador.
+4	Piloto con 1-2 empresas constructoras (50-150 trabajadores).
+Cobranza desde el dia 1.	GMV inicial, validacion de precio por empleado y primeras metricas de retencion.
+5	Modulo de tareas: asignacion y confirmacion desde app.	Segunda funcion adoptada; incremento de ticket por empresa piloto.
+6-7	Exportacion PLAME, gestion de documentos y alertas de vencimiento. Dashboard para gerencia.	Demo funcional completo para jurado; casos de uso con ahorro medible en horas y multas.
+
+6.	Mercado y oportunidad
+ 
+La oportunidad combina tres fuerzas: volumen masivo de trabajadores de campo en sectores formales, presion regulatoria creciente de SUNAFIL y OSINERGMIN, y ausencia de soluciones asequibles en espanol para empresas de 100 a 2,000 trabajadores. Las soluciones globales cuestan entre $30 y $80 por usuario al mes y requieren IT especializado. TRAKIA cubre ese vacio a S/12-18 por trabajador, con app en espanol, soporte por WhatsApp y onboarding en una semana.
+Tamano de oportunidad	Supuesto conservador	Resultado
+Trabajadores manufactura Lima (2025)	755,600 trabajadores (SNI/INEI)	Mercado profundo en un solo sector.
+Trabajadores construccion Peru	1,163,300 (crecimiento 3.1% anual)	Sector con mayor ingreso promedio y mayor exposicion SUNAFIL.
+Empresas seguridad privada Lima	+600 medianas activas	Alta rotacion = dolor permanente de onboarding y control.
+Captura inicial conservadora	30 empresas x 200 trabajadores	6,000 trabajadores activos en plataforma.
+Ingreso mensual a ese ritmo	6,000 x S/12 = S/72,000 MRR	S/864,000 anualizados.
+Cada cliente de 300 empleados vale	S/3,600 al mes	10-14 clientes = meta BMW X1 cubierta.
+
+7.	Modelo de negocio
+ 
+Fuente de ingreso	Como se cobra	Por que funciona
+Suscripcion por trabajador activo	S/12 a S/18 por trabajador/mes segun plan.
+Factura mensual o anual con descuento 10%.	Ingreso predecible; el cliente escala automaticamente al contratar mas personal.
+Setup fee de implementacion	S/1,500 a S/3,000 por empresa segun tamano. Incluye onboarding y capacitacion.	Cubre el costo de adquisicion; el margen recurrente es casi puro.
+Plan premium con modulo
+SUNAFIL	S/18/trabajador/mes. Incluye reportes normativos, firma digital y gestion de documentos.	Upsell natural cuando el cliente ya usa el plan base y enfrenta una fiscalizacion.
+Licencia anual con descuento	Pago anticipado de 12 meses con 10% de descuento sobre el total.	Mejora el flujo de caja y reduce el churn; el cliente queda comprometido un ano.
+
+Estrategia:
+Empezar con el plan base (S/12/trabajador) en constructoras medianas para validar adopcion. No personalizar el producto hasta tener 5 clientes pagando. Migrar a contrato anual desde el primer cliente para mejorar el flujo de caja desde el mes 1.
+8.	Diferenciacion
+ 
+Alternativa actual	Que hace	Que no resuelve
+Reloj biometrico de oficina	Registra asistencia en un punto fijo.	No sirve para campo disperso; no reporta incidentes; no asigna tareas.
+SAP / Workday /
+SuccessFactors	Suite completa de RRHH y operaciones.	$30-80/usuario/mes, en ingles, requiere IT especializado y 6+ meses de implementacion.
+Excel + WhatsApp	Solucion actual del 80% del mercado objetivo.	Sin trazabilidad, sin tiempo real, sin exportacion a PLAME, no escala.
+Apps genericas de geolocalizacion	Rastreo GPS de vehiculos o personas.	No tienen modulo de tareas, incidentes, documentos ni cumplimiento laboral peruano.
+TRAKIA	App offline-first para el trabajador + panel supervisor + cumplimiento SUNAFIL.	Unico sistema en espanol, asequible, disenado para el campo peruano, con logica laboral local.
+
+Moat progresivo
+La ventaja inicial es la logica laboral peruana embebida (calculo de horas extra, CTS, PLAME) que soluciones extranjeras no tienen. La ventaja defendible aparece cuando TRAKIA acumula datos de productividad por cuadrilla, patrones de incidentes por tipo de obra y benchmarks de asistencia por sector — datos que ningun competidor puede comprar y que hacen al cliente dependiente del historial.
+9.	Criterios
+ 
+
+Criterio de evaluacion	Peso en bases	Como TRAKIA puede puntuar alto
+Problematica y mercado objetivo	30% en fases 1 y 2	Dolor frecuente, cuantificable (multas SUNAFIL) y cliente definido con datos del INEI y SNI 2025-2026.
+Equipo fundador y viabilidad	25% en fases 1 y 2	MVP movil alcanzable en 6-7 semanas; sin CAPEX; ventas directas desde el primer mes via red de contactos.
+Diferenciacion e innovacion tecnologica	20% en fases 1 y 2	App offline-first para Android basico; logica laboral peruana embebida; exportacion PLAME/SUNAFIL automatica.
+Avance del MVP	25% en fases 1 y 2	Se puede llegar al Demo Day con entrevistas, prototipo en campo, primer cliente pagando y datos reales de adopcion.
+Traccion y validacion	25% en final	El jurado puede ver horas ahorradas, multas evitadas, empresas pagando y trabajadores activos en plataforma.
+Modelo de negocio	10% en final	Pricing por empleado activo genera ingresos predecibles; el cliente escala solo al crecer su planilla.
+
+
+
+
+
+
+
+10.	Metricas objetivo para Demo Day
+ 
+Metrica	Meta minima	Meta ganadora
+Empresas entrevistadas	20	35+
+Supervisores / gerentes entrevistados	30	50+
+Empresas piloto registradas	3	6+
+Trabajadores activos en plataforma	150	400+
+MRR al dia del Demo Day	S/1,800	S/4,800+
+Check-ins registrados en plataforma	500	2,000+
+Incidentes reportados con foto	10	30+
+Horas ahorradas por empresa/mes (RRHH)	8-10 horas	12-15 horas
+Intencion de renovacion contrato	60%	80%+
+
+11.	Narrativa de pitch
+ 
+Apertura
+En Lima hay mas de un millon de trabajadores que van a obras, plantas y sitios de seguridad cada dia sin una computadora. Detras de cada turno hay un supervisor con un cuaderno. Detras de cada accidente hay un papel que nadie sabe donde esta. Y detras de cada fiscalizacion de SUNAFIL hay una empresa que paga una multa que pudo haber evitado. TRAKIA convierte ese caos en un sistema.
+1. Problema:	Las empresas peruanas con trabajadores de campo operan sin trazabilidad: papel, WhatsApp y decision tardias.
+2. Cliente inicial:	Constructoras y plantas manufactureras en Lima con 100 a 800 trabajadores formales.
+3. Solucion:	App offline-first para el trabajador + panel web supervisor + cumplimiento SUNAFIL automatico.
+4. Validacion:	Entrevistas, piloto con empresas reales, trabajadores activos, MRR desde el mes 1.
+5. Vision:	Ser el sistema operativo de campo para los 3 millones de trabajadores formales del Peru.
+
+
+
+
+
+12.	Riesgos y respuestas
+ 
+Objecion del jurado	Respuesta recomendada
+¿No es solo una app de asistencia?	No. La asistencia es el primer modulo. El producto real es trazabilidad operativa completa: tareas, incidentes, documentos y cumplimiento SUNAFIL desde un mismo sistema.
+¿El trabajador no tiene smartphone?	El 87% de adultos peruanos tiene smartphone, incluyendo Android de gama baja. La app funciona en dispositivos desde Android 8 y consume menos de 50MB.
+¿Las constructoras no son conservadoras con tecnologia?	El dolor regulatorio (multas SUNAFIL) y la presion de trazabilidad en licitaciones publicas crean urgencia real. El piloto gratuito de 30 dias elimina la friccion de entrada.
+¿Workday o SAP no podrian entrar a este segmento?	Sus precios ($30-80/usuario/mes), idioma, tiempo de implementacion (6-12 meses) y necesidad de IT especializado los excluyen del segmento de
+100-800 trabajadores.
+¿Como escalan sin perder calidad de servicio?	El producto es SaaS: el costo marginal de un cliente nuevo es casi cero. El soporte se atiende por WhatsApp; la capacitacion es un video de 5 minutos por modulo.
+¿Que pasa si el trabajador pierde el celular o no tiene bateria?	El sistema permite registro offline con sincronizacion posterior. El supervisor puede registrar manualmente desde el panel web. No hay punto unico de falla.
+
+13.	Ficha para inscripcion
+ 
+Nombre del proyecto	TRAKIA
+Industria	Operaciones B2B, gestion de trabajadores de campo, SaaS laboral.
+Problema	Las empresas con trabajadores de campo operan sin trazabilidad digital: asistencia en papel, incidentes sin evidencia, tareas sin seguimiento y reportes manuales que generan multas SUNAFIL evitables.
+Solucion	App movil offline-first para el trabajador + panel web supervisor con check-in GPS, reporte de incidentes, asignacion de tareas y exportacion automatica a PLAME/SUNAFIL.
+Cliente inicial	Empresas constructoras y manufactureras en Lima con 100 a 800 trabajadores de campo sin software de operaciones asequible.
+Modelo de negocio	Suscripcion mensual S/12-18 por trabajador activo + setup fee S/1,500-3,000 + plan premium con modulo SUNAFIL completo.
+Innovacion	App offline-first para Android basico, logica laboral peruana embebida (horas extra, PLAME, CTS), reporte de incidentes con GPS y firma digital, todo diseado para el trabajador sin capacitacion tecnica.
+MVP	Check-in GPS offline, reporte de incidente con foto, panel supervisor en tiempo real, exportacion PLAME. Implementable en 6-7 semanas.
+Vision	Ser el sistema operativo de campo para los 3 millones de trabajadores formales del Peru, expandiendo a Bolivia, Ecuador y Colombia.
+
+
+
+
+14.	Fuentes
+ 
+[F1] Sociedad Nacional de Industrias (SNI) / INEI. Empleo manufactura Lima Metropolitana 2025: 755,600 trabajadores, crecimiento 3.6%. Enero 2026. https://sni.org.pe/
+[F2] INEI. Situacion del Mercado Laboral Peru 2025: construccion 1,163,300 trabajadores, servicios 7.2M, total 17M+. Mayo 2025.
+https://www.inei.gob.pe/
+[F3] BCRP. Notas de Estudios No. 23, Marzo 2025. Empleo formal Lima crece 3.4% anual; manufactura y construccion lideran. https://www.bcrp.gob.pe/
+[F4] MINEM / Rumbo Minero. Empleo minero Q1 2025: 242,176 trabajadores; 70.2% via contratistas. Mayo 2025. https://www.rumbominero.com/
+[F5] SERVISEGUR / SUCAMEC. Empresas de seguridad privada Lima 2026: Liderman 14,540 agentes, G4S 7,956, Proseguridad 8,891; +600 empresas medianas activas. https://servisegur.com.pe/
+[F6] Apoyo Consultoria / Gestion Peru. El 91% de empresas peruanas reporta problemas para encontrar talento digital. Mayo 2025.
+https://gestion.pe/
+[F7] Cornerstone / Gestion Peru. Talent Insights 2026: resistencia al cambio principal obstaculo RRHH Peru (56.3%). Febrero 2026.
+https://gestion.pe/
+[F8] Geovictoria. El futuro del control de asistencia en Peru 2025: normativa SUNAFIL, Ley 29783 SST y tendencias biometricas.
+Febrero 2025. https://www.geovictoria.com/es-pe/
+[F9] Bases del Concurso Primer Paso 2026-1: cronograma, criterios de evaluacion y ponderaciones. Documento base Innova ULima.
+
