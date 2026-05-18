@@ -1,6 +1,6 @@
 # TRAKIA MVP — Planificación técnica
 
-Sistema de operaciones para trabajadores de campo. Frontend React (build estático), backend PHP + MySQL. Hosteable en cualquier shared hosting con soporte PHP.
+Sistema de operaciones para trabajadores de campo. Frontend React + TypeScript (build estático), backend PHP + MySQL. Hosteable en cualquier shared hosting con soporte PHP.
 
 ---
 
@@ -8,7 +8,7 @@ Sistema de operaciones para trabajadores de campo. Frontend React (build estáti
 
 | Capa | Tecnología | Razón |
 |---|---|---|
-| Frontend | React 18 + Vite | Build estático deployable en cualquier host; componentes reutilizables |
+| Frontend | React 18 + Vite + **TypeScript** | Vite compila TS → JS estático; tipos previenen bugs en tiempo de desarrollo |
 | Routing | React Router v6 | Client-side routing; funciona con `.htaccess` en Apache |
 | Estilos | Tailwind CSS v3 | Mismo sistema visual que la landing; JIT integrado en Vite |
 | Mapas | Leaflet + react-leaflet | Open source, sin API key |
@@ -17,6 +17,8 @@ Sistema de operaciones para trabajadores de campo. Frontend React (build estáti
 | Base de datos | MySQL 8.x | Disponible en casi todo hosting compartido |
 | Auth | JWT (HS256) | PHP genera el token; React lo guarda en `localStorage` |
 | Upload | PHP nativo | SCTR, fotos de incidentes, documentos |
+
+> **TypeScript y shared hosting:** Vite compila `.tsx/.ts` → `.js` puro durante `npm run build`. El servidor nunca ve TypeScript — solo archivos estáticos JS/CSS/HTML. 100% compatible con cualquier hosting.
 
 **No se usa:** Next.js, SSR, Node en servidor, Composer (opcional), Docker.
 
@@ -32,22 +34,27 @@ Sistema de operaciones para trabajadores de campo. Frontend React (build estáti
 
 ```
 MVP/
-├── frontend/                    ← Proyecto React + Vite
+├── frontend/                    ← Proyecto React + Vite + TypeScript
 │   ├── src/
-│   │   ├── main.jsx
-│   │   ├── App.jsx              ← Router raíz
+│   │   ├── main.tsx
+│   │   ├── App.tsx              ← Router raíz
+│   │   ├── types/
+│   │   │   └── index.ts         ← Interfaces: Worker, Checkin, Task, Incident, etc.
+│   │   ├── data/
+│   │   │   └── mock.ts          ← Datos hardcodeados para Fase 0 (mockup estático)
 │   │   ├── api/
-│   │   │   └── client.js        ← fetch wrapper con JWT
+│   │   │   └── client.ts        ← fetch wrapper con JWT (usado desde Fase 1)
 │   │   ├── components/
 │   │   │   ├── ui/              ← StatCard, Badge, DataTable, Modal, etc.
 │   │   │   ├── layout/
-│   │   │   │   ├── AppShell.jsx ← Sidebar + topbar
-│   │   │   │   └── AuthLayout.jsx
+│   │   │   │   ├── AppShell.tsx ← Sidebar + topbar
+│   │   │   │   └── AuthLayout.tsx
 │   │   │   └── maps/
-│   │   │       └── CheckinMap.jsx
+│   │   │       └── CheckinMap.tsx
 │   │   ├── pages/
-│   │   │   ├── Login.jsx
-│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Login.tsx
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── LiveOps.tsx      ← Operaciones en campo en vivo
 │   │   │   ├── workers/
 │   │   │   ├── checkins/
 │   │   │   ├── tasks/
@@ -59,8 +66,9 @@ MVP/
 │   │   └── utils/
 │   ├── public/
 │   ├── index.html
-│   ├── vite.config.js
-│   ├── tailwind.config.js
+│   ├── vite.config.ts
+│   ├── tailwind.config.ts
+│   ├── tsconfig.json
 │   └── package.json
 │
 ├── backend/                     ← API PHP
@@ -309,6 +317,7 @@ CREATE TABLE worker_documents (
 | Check-ins hoy | `/checkins` | Tabla en tiempo real + mapa Leaflet con pins de ubicación |
 | Tareas | `/tasks` | Kanban: pendiente / en progreso / completada / problema |
 | Nueva tarea | `/tasks/new` | Formulario: título, sede, fecha, prioridad, asignación múltiple de workers |
+| Operaciones en vivo | `/live` | Mapa en tiempo real con todos los workers activos, incidentes abiertos y estado de tareas del turno |
 | Incidentes | `/incidents` | Listado con filtro por severidad y estado; foto en modal; pin en mapa |
 | Nuevo incidente | `/incidents/new` | Formulario de registro: worker, sede, descripción, severidad, foto, GPS |
 | Detalle incidente | `/incidents/:id` | Vista completa: datos, foto, mapa, historial de estado, campo de revisión |
@@ -414,31 +423,72 @@ Endpoints protegidos requieren: `Authorization: Bearer {jwt}`
 
 ---
 
-## Módulos por prioridad (orden de construcción)
+## Roadmap
+
+### Fase 0 — Mockup estático (datos hardcodeados)
+> Objetivo: UI completa navegable sin backend ni base de datos. Sirve para validar flujos con usuarios reales antes de escribir una línea de PHP.
+
+Todo el estado viene de `src/data/mock.ts` — un objeto TypeScript con arrays de workers, checkins, tareas e incidentes ficticios. Las páginas leen de ahí directamente, sin fetch ni API.
 
 ```
-Semana 1 — Base
-  [ ] Setup Vite + React + Tailwind + React Router
-  [ ] AppShell con sidebar y navegación
-  [ ] Backend: DB, Auth JWT, estructura de carpetas PHP
-  [ ] Auth completo: login, ProtectedRoute, logout
+[ ] Setup: Vite + React 18 + TypeScript + Tailwind + React Router
+[ ] Tipos base en src/types/index.ts (Worker, Checkin, Task, Incident, Document, Site)
+[ ] Datos mock en src/data/mock.ts
+[ ] AppShell: sidebar, topbar, navegación entre secciones
+[ ] Layout de autenticación (pantalla login — sin lógica real, solo UI)
+[ ] Dashboard: KPIs del día con datos mock + gráfico de asistencia semanal
+[ ] Operaciones en vivo (/live): mapa Leaflet con pins de workers + panel lateral de alertas
+[ ] Trabajadores (/workers): tabla con búsqueda y filtros + badges de estado
+[ ] Perfil trabajador (/workers/:id): historial mock de check-ins, tareas, documentos
+[ ] Check-ins (/checkins): tabla del día + mapa de ubicaciones
+[ ] Tareas (/tasks): kanban con drag visual (o columnas sin drag para MVP)
+[ ] Incidentes (/incidents): listado + nuevo incidente (formulario sin submit real) + detalle
+[ ] Documentos (/documents): vista de vencimientos agrupados por urgencia
+[ ] Reportes (/reports): selector de fechas + tabla de preview + botón de exportar (mock)
+[ ] Settings (/settings): formulario de empresa y sedes (solo UI)
+[ ] Responsive: sidebar colapsable en móvil, tablas con scroll horizontal
+```
 
-Semana 2 — Workers y check-ins
-  [ ] CRUD workers (lista, alta, perfil)
-  [ ] Registro de check-ins desde panel + mapa Leaflet
-  [ ] Dashboard con KPIs del día
-  [ ] API /checkins para futura app móvil
+**Criterio de salida de Fase 0:** se puede hacer un demo completo del flujo del supervisor sin que ningún botón falle. Si un usuario de prueba entiende el producto navegando el mockup → pasar a Fase 1.
 
-Semana 3 — Incidentes y tareas
-  [ ] Módulo incidentes: lista, nuevo, detalle con foto y mapa
-  [ ] Módulo tareas: kanban + formulario de asignación
-  [ ] API /tasks e /incidents
+---
 
-Semana 4 — Documentos, reportes y pulido
-  [ ] Upload documentos + vista de próximos a vencer
-  [ ] Export CSV PLAME
-  [ ] Responsive móvil, estados vacíos, loading skeletons
-  [ ] Settings: sedes, usuarios supervisores
+### Fase 1 — Backend real (PHP + MySQL)
+> Objetivo: reemplazar `mock.ts` por llamadas reales a la API. La UI no cambia.
+
+La estrategia es que cada hook (`useWorkers`, `useCheckins`, etc.) tenga un flag `USE_MOCK` en Fase 0. En Fase 1 se apaga ese flag y el hook pasa a llamar a `api/client.ts`.
+
+```
+[ ] Estructura de carpetas PHP + PDO singleton + Response helper
+[ ] Schema SQL completo + seed con datos de demo
+[ ] Auth: POST /auth/login → JWT; ProtectedRoute en React usa token real
+[ ] API /workers: GET lista, POST crear, GET :id, PUT actualizar, DELETE desactivar
+[ ] API /checkins: GET con filtros, POST (acepta batch offline), GET /today
+[ ] API /tasks: CRUD completo + PATCH de asignación por worker
+[ ] API /incidents: GET lista, POST con foto (multipart), PATCH estado
+[ ] API /documents: GET por vencimiento, POST upload, DELETE
+[ ] API /reports: GET /plame?from=&to= → CSV real
+[ ] Migrar cada página de mock.ts → useQuery al endpoint correspondiente
+[ ] Upload de fotos de incidentes y documentos (PHP valida MIME)
+[ ] .htaccess definitivo para React Router + paso de /api/ al PHP
+```
+
+**Criterio de salida de Fase 1:** un supervisor real puede registrarse, agregar workers, registrar check-ins e incidentes, y descargar el reporte de asistencia del mes. Sin datos hardcodeados.
+
+---
+
+### Fase 2 — Operaciones en tiempo real y app móvil
+> Objetivo: polling automático en el panel + API lista para consumir desde Android.
+
+```
+[ ] Polling cada 30s en /live y /dashboard (o WebSocket si el hosting lo permite)
+[ ] Push notifications de incidentes críticos (email vía PHP mail / SMTP)
+[ ] Alertas automáticas de documentos por vencer (cron job o script manual)
+[ ] API /auth/worker-login (DNI + PIN) para app Android
+[ ] Endpoint POST /checkins acepta batch firmado offline
+[ ] Export PLAME con formato validado contra planilla electrónica real
+[ ] Multi-sede: filtros por obra en dashboard y live ops
+[ ] Onboarding: wizard de setup para empresa nueva (crear sedes, invitar supervisores)
 ```
 
 ---
